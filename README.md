@@ -1,99 +1,222 @@
-# 0xdeface.me Whitepaper - A standard to settle Ethereum smart contracts gracefully in case of vulnerabilities.
+# 0xdeface.me Whitepaper
+
+> A standard to settle Ethereum smart contracts gracefully in case of
+> vulnerabilities.
 
 ## Abstract
 
 There's an estimated 3 million ETH (350 million USD) locked in vulnerable smart
-contracts today. While, curiously, only 0.30% or 9,094 ETH (1 million USD) has
-been claimed by attackers, smart contracts are continued to be attacked on a
-daily basis [1]. In this publication, we present a novel scheme to prevent
-contracts getting hacked by incentivizing attackers to confidentially submit
-vulnerabilities directly to contract owners through 0xdeface's Negotiator
-contract. 0xdeface's goal is to make contract hacking a worthwhile occupation
+contracts today. While, curiously, only 0.30% or 9,094 ETH (1 million USD) have
+been claimed by attackers, smart contracts continue to be attacked on a daily
+basis [1]. In this paper, we present a novel scheme to prevent contracts from
+getting their funds drained by attackers. We introduce an game that incentivizes
+attackers to confidentially submit vulnerabilities directly to a contract's
+owner. The game's goal being to make contract attacking a worthwhile occupation
 for attackers while providing a secure protocol for contract owners to settle
-their contracts, returning users funds without losing their credibility.
+their contracts, fairly returning users' funds.
 
+## Introduction
+
+Smart contracts represent a fundamental paradigm shift in programming. Ever
+since their practical implementation through Ethereum, they allow for
+permissionless and transparent transfer of monetary value. As the idea is still
+still recent, many best-practices are still under active development and will
+take years to stabilize.
+
+In Ethereum, smart contracts are written in Solidity or Vyper, with both
+languages being respectively inspired by languages from the traditional
+software world: JavaScript and Python. Both in Solidity and Vyper's case, the
+base language was slightly adjusted to feature new primitives making transfer
+of monetary value possible.  Not always with great success however.  Especially
+Solidity's striking similarity to JavaScript has often provoked criticism. The
+accusation of having too relaxed design principles for transferring money
+securely being thrown around on the Internet frequently.
+
+And indeed, Solidity features odd design choices. To name a few: (1) It doesn't
+have under- and overflow protection, (2) interfaces are not enforced and (3)
+similar modifiers are easily confused as their naming is indistinguishable.
+
+Strikingly, these choices paired with a lack of best practices, unexperienced
+developers and lots of money at stake caused several million ETH to be stolen
+to this present day. Most notably in June 2016, when an attacker drained 3.6
+million ETH from TheDAO [2], forcing the Ethereum community to hard fork the
+network to regain access to the funds. Though much development has taken place
+over the last years with (1) the community working together towards best
+practices, (2) developers becoming more experienced with the use cases and (3)
+professional audit firms eliminating risks pre-launch, the fact of the matter
+that writing secure smart contracts is hard remains. To this day, even the most
+experienced teams and their world-class auditors make mistakes [3] and will,
+going forward.
+
+To further understanding of this phenomenon and to give proper context to the
+following sections, we'd like to highlight the incentives at play.
+Specifically, we'd like to elaborate on the motivations to attack contracts and
+how we think 0xdeface.me can help to improve the situation from an
+ecosystem-wide zero-sum game to a positive-sum game.
 
 ## Motivation
 
-Smart contracts are a novel paradigm in programming. With their dawn, it's
-suddenly possible that machines can hold and manage monetary value. In Ethereum
-they're easily written in Solidity or Vyper, both languages coming from the
-traditional software world - adjusted for programming money. Solidity's
-striking similarity to JavaScript, has often provoked criticism accusing it of
-having to relaxed design decisions when it comes to handle money. To name a
-few, Solidity doesn't have under- and overflow protection, interfaces are not
-enforced and similar modifiers are frequently confused by its developers.  The
-fact of the matter is, writing secure smart contracts is hard and even the best
-teams in the world sometimes make mistakes.
+The frequency and ingenuity of smart contract attacks will increase in the
+future. With the release of automated auditing suites like Consensys's Mithril
+[4] and TrailOfBits's ManiCore [5], documentation of common vulnerabilities
+and the growing monetary value at stake, we might soon see machines attacking
+smart contracts autonomously.
 
-As most smart contracts essentially expose an API to interact with them, it's
-is often a technical necessity for developers to open source a smart contract's
-code. While in theory, this might lead to communities forming and improving the
-contracts, once deployed the contract cannot be changed. It's immutably stored
-on Ethereum. This in turn causes several problems. 
+With this assumption in mind, we discuss the motives at play for (1) why it is
+seemingly rational for an attacker to target smart contracts, (2) why it is
+difficult to maintain smart contracts and (3) why this leads to a zero-sum game
+for all participants involved. Furthermore, we motivate why there should be an
+EIP standard and marketplace for consensually exchanging vulnerabilities
+between attackers and contract owners. To begin with, we elaborate reasons for
+why it is seemingly rational for an attacker to target smart contracts.
 
-Firstly, an attacker can trivially get access to a contract's source code by
-searching the web. Compared to intruding traditional closed source systems,
-where leaking source code is often a desired target for an attack, finding a
-contract's source code makes it easy for an attacker to get an overview of the
-system and its potential flaws.  Furthermore, as smart contracts are not only
-limited in their size, they're also often conventionally limited in their
-complexity. A positive for the attacker as they can trivially setup a local
-system to tentatively attack the system without running the risk of getting
-caught attacking a live system.  Finally, has an attacker found a vulnerability
-on their local system, they can confidentially execute the attack as the
-deterministic nature of Ethereum allows them to download all past changes and
-apply them to their local system.
+Smart contracts are a playground for financial innovation and experimentation.
+They often implement unprecedented incentive schemes. Additionally, ever since
+the dawn of Bitcoin and Ethereum, there has always been a commonly shared
+conviction of the community that transparency, decentralization and
+permission-free innovation is key to success of the respective ecosystem.
 
-Secondly, the contract developer is not able to mitigate any vulnerabilities by
-upgrading the contract in place. Once uploaded to the Ethereum main net, smart
-contracts get assigned a hash built from the deployer's address and nounce
-[find source]. This unique identifier is then used by clients to interact with
-the contract. Today, Ethereum smart contracts cannot be changed in place,
-meaning the source code powering them cannot be replaced without not also
-changing the unique identifier used to interact with the contract (Note that
-this will change with Ethereum's Constantinople update and the introduction of
-CREATE2). A developers options are hence limited to the following: (A) Opt to
-build an upgradable contract using proxy-patterns or (B) deploy a revised
-version of the contract and inform users about the change. Both options come
-with significant negatives: (A) An upgradable proxy contract is inherently not
-permissionless as it likely features a contract owner that can change the
-underlying logic and cause hence significant damages to the contract's users.
-(B) Informing users and updating web apps to the newly generated contract
-address is cumbersome and non-scalable.
+For several reasons, developing a smart contract as closed source is hence an
+obvious faux-pas. (1) Users should be able comprehend the full functionality of
+a smart contract (transparency). (2) Ideally nobody is able to exercise full
+control over a contract (decentralization). (3) Everybody should be allowed
+without the incurrence of a cost to innovate on any part of the infrastructure
+(permission-free). It is therefore, and for other miscellaneous reasons, a best
+practice in the ecosystem to open source smart contracts. For an smart contract
+attackers, however, this yields several positives.
 
-Finally, instead of fairly disclosing the vulnerability to the contract
-developer, an attacker might simply be incentivized to directly attack a
-contract by draining its funds. Reasons for this are plentiful. With today's
-privacy-technologies like TOR it's virtually trivial to be anonymous.
-Privacy-preserving cryptocurrencies like Monero and Zcash allow an attacker to
-"wash" their coins before and after an attack. Bug bounties for contracts might
-not exist or their amounts might simply perish in comparison to the contract's
-actual main net balance.
+While, open sourcing smart contracts leads to communities and ecosystems
+forming and best practices to developer, it also leads to source code being
+easily accessible to attackers.
 
-While all of these points play in favor of the attacker, executing the actual
-hack still comes with significant negatives. Attacking contracts with a large
-balance often comes with increased (social) media coverage and hence with an
-increased community vigilance trying to expose the hacker. In that process, an
-attacker's accounts might virtually get frozen.  Usually, by exchanges and
-users blacklisting the attackers' accounts. This increased scrutiny in reality then often
-means that an attacker cannot spend their stolen coins, potentially extinguish
-an attacker's incentive to find more vulnerabilities. 
+0xdeface ran a several week long experiment where we, using a full node,
+audited and crawled the Ethereum blockchain and GitHub for newly uploaded smart
+contracts. Through leaving their `/build` folder in their GitHub repository,
+contracts could simply be searched by their address using the GitHub search
+API. While the setup of this experiment was trivial, it yielded many potential
+opportunities where contracts were vulnerable and easily exploitable by simply
+looking at the source code. In many cases, Mythril, the automatic auditing
+tool, even hinted towards the specific function and vulnerability to exploit.
+Even more trivial than that is of course to occasionally scan Etherscan's
+"Verified Contracts" page [5] for smart contract source code [footnote 1].
 
-Additionally, we'd like to comically note that attacking smart contracts of
-course is also a violation of the law in many juristictions, giving the
-attacker again less motivation to attack as facing charges might deter many.
-Speculatively, this might be why we only see 0.30% of vulnerable ETH being
-stolen today.
+All this to say that while open sourcing smart contracts might increase security
+ecosystem-wide, it may not necessarily for the individual contract.
 
-- missing points: auditingj
-    - Auditing is good, but doesn't accidents from happen. It's not enough
-    - Often, there is no way to contact the contract owner simply. There is no
-    canonical way of settling smart contracts. We would like to improve this
+Once an attacker has access to a contract's source code, they can setup a local
+environment using tools like Ganache, Truffle and Remix IDE. This local setup
+is then used to simulate attacks against the contract. Is a serious
+vulnerability found, the attacker can - given the deterministic nature of
+Ethereum - confidentially assess whether or not it can be used to drain funds
+on the main net. Using privacy-preserving technologies like TOR, Monero and
+Zcash, this makes attacks efficient, cheap, largely anonymous and therefore
+rational for an attacker.
 
-## Sources
+Now that we've given reasons for why attacking smart contracts is rational for
+an attacker, we'd like to elaborate why it is difficult for owners to maintain
+their contracts once deployed.
+
+In essence there's one simply reason: Once deployed, smart contracts are
+immutable. Every contract uploaded to the Ethereum network gets assigned an
+address, that is generated using the deployer's address and a nounce. This
+unique identifier is then used by clients to interact with the contract. Today,
+Ethereum smart contracts cannot be changed in place [footnote 2].  A contract
+owner's options are hence limited to the following maintenance schemes: (1) Opt
+to build an upgradeable contract using proxy-patterns. (2) Deploy a revised
+version of the contract and inform users about the change.
+
+Unfortunately, both options come with significant negatives: (1) An upgradeable
+proxy contract is inherently not permissionless and/or decentralized. It likely
+defines an owner that is able to change the proxy routing such that
+potentially user's funds could get, in the worst case, stolen. (2) Informing
+users and updating apps to the newly generated contract address is
+cumbersome, trust-maximizing and non-scalable. It comes with increased scrutiny
+by the community, potential loss of credibility and significant cost.
+
+While in the traditional software world vulnerabilities can simply be fixed in
+minutes by identifying, fixing and redeploying the software with the same
+state, due to Ethereum's immutability property a vulnerability is the
+worst-case scenario for every business in the ecosystem. Maintaining deployed
+smart contracts is, and will be, difficult.
+
+Which brings us to part three of this motivation: Why attacking smart contracts
+is currently a zero-sum game. Firstly, we'll argue why attackers may not be
+incentivized to attack contracts. Secondly, we highlight the problems of
+contract owners suffering an attack. Third, we state the role of the user in
+this situation.
+
+Attacking contracts, especially widely-known projects in the space, often comes
+with several negatives for the attacker. (1) Increased (social) media coverage
+and community vigilance can lead to the hacker getting exposed. (2) Through
+crowd-sourcing the attacker's addresses, the stolen founds can effectively be
+frozen. This usually happens by exchanges blacklisting the attacker's accounts.
+(3) Stolen funds can most likely not be exchanged into fiat, as most exchanges
+require KYC for larger amounts. (4) Most importantly, however, an attacker
+might be prosecuted by the law as stealing users' funds is a criminal offense
+in many jurisdictions [footnote 3]. This may be the reasons why only 0.3% of
+Ethereum smart contracts funds have been claimed by attackers so far.
+
+For a contract owner, the situation is equally tricky. (1) Bounty programs are
+often run before a contract gets deployed. After deployment, the contract
+comically speaking becomes the bounty [8]. (2) As seen recently, Audits can
+only limit vulnerabilities but not totally eradicate them [footnote 4]. (3) And
+as stated before, successful attacks to deployed contracts are often
+businesses' worst-case scenarios, going so far as to even the total shutdown of
+the operation (see: The DAO) [2].
+
+In all of this, the contract users are probably off worst, however. They
+potentially use all their funds indefinitely and often have no way to
+participate in the governance decisions taken by a contract owner under fire.
+With regulation lagging behind, there is also a significant lack in
+accountability. Who's to blame for the loss of funds? The attacker or the
+contract owner?
+
+We hence conclude that attacking smart contracts in the Ethereum ecosystem is a
+zero-sum game. Attackers, owners and users all lose. It is at this point that
+we'd like to introduce 0xdeface. 0xdeface or EIP-XXXX is a standard to settle
+deployed smart contracts gracefully in favor of users and developers. Auditors
+confidentially submit disclosures to 0xdeface.me. Contract owners review
+disclosures. Do auditor and contract owner agree that a serious vulnerability
+has been found, then a contract can be settled gracefully by returning its
+users' funds. Auditors get rewarded with a bounty held in escrow by 0xdeface's
+Negotiator. 0xdeface makes attacking Ethereum smart contracts a positive-sum
+game.
+
+In the next section we go over the incentives of 0xdeface's Negotiator contract
+and 0xdeface's marketplace.
+
+## Negotiator
+
+## Marketplace
+
+## Fee
+
+
+## Footnotes
+
+1. In fact, we assume there to be a whole hidden community of diverse smart
+   contract experts waiting to be spawned into existence on Etherscan's
+   "Verified Contracts" page. In the future, 0xdeface's goal is to offer this
+   community a proper home at 0xdeface.me.
+2. Note that Ethereum smart contracts will be changeable in-place with the
+   Constantinople update in February and the introduction of CREATE2.
+3. Though currently we aren't aware of any on-going cases against smart
+   contract attackers, we strongly assume it will be against the law in many
+   jurisdictions. We assume this as there have been cases where stealing
+   virtual goods has been deemed a crime before [7].
+4. Even though Gnosis's DAOStack contracts were audited before deploying them
+   to the Ethereum main net, they got drained as part of their extended bounty
+   program within hours [3].
+
+## References
 
 1. [PEREZ, Daniel; LIVSHITS, Benjamin. Smart Contract Vulnerabilities: Does
    Anyone Care?. arXiv preprint arXiv:1902.06710,
    2019.](https://arxiv.org/abs/1902.06710)
-
+1. https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562
+1. https://blog.gnosis.pm/security-update-on-the-dxdao-bug-bounty-52cec0f02cde
+1. https://github.com/ConsenSys/mythril-classic
+1. https://github.com/trailofbits
+1. https://etherscan.io/contractsVerified
+1. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
+1. https://hackerone.com/augurproject
