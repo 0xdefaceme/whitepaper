@@ -233,13 +233,78 @@ infrastructure, it is 0xdeface's goal to nurture a community of security
 professionals by providing tools for collaboration and automation.
 
 Now that we highlighted the main components, we walk through the process of
-submitting and eventually exiting a vulnerability.
+commiting and eventually exiting a vulnerability.
 
 ## Process
 
-![alt text](https://raw.githubusercontent.com/0xdefaceme/whitepaper/master/assets/figure1.png)
+This section outlines the interactive process of _commiting_, _paying_,
+_revealing_ and _deciding_ on a vulnerability. As it serves the purpose to
+further understanding about *how* the system works, we're going to ignore
+incentives for now. To simplify, we're instead going to make a few assumptions.
+(1) The exploitable contract implements the Exploitable EIP standard. (2) The
+attacker is willing to participate in 0xdeface's incentive game.  To not blow
+the scope of this paper, we're only going to describe the happy path here.
+We'll discuss attack vectors in one of the following sections.
+
+As figure 1 illustrates, the process starts with the attacker finding a
+vulnerability in the exploitable contract.
+
+![figure 1](https://raw.githubusercontent.com/0xdefaceme/whitepaper/master/assets/figure1.png)
+
+The attacker hence calls `commit(IExploitable exploitable, uint256 damage)` on
+the negotiator contract. `exploitable` here being the vulnerable contract and
+`damage` the potential damage the vulnerability could cause. Note that in this
+first iteration, we allow the attacker to single-handedly set the estimated
+damage [footnote 5].
+
+Calling `commit`, the negotiator contract will make sure that `IExploitable
+exploitable` implements `implementsExploitable()` and that `damage` doesn't
+exceed the exploitable's balance. Is this the case, then a new vulnerability
+will be added and a `Commit(uint256 id, address exploitable, uint256 damage,
+address attacker)` event will be emitted to inform the contract owner [footnote
+6].
+
+Note that at this point no information about the vulnerability has been put
+online yet. As the vulnerability report will be encrypted using eth-ecies
+(public-key cryptography), the contract owner first has to share a public key
+with the attacker [10]. This is done by the contract owner calling `pay(uint
+vulnId, string publicKey) public payable`. `pay` checks (1) if the
+vulnerability exists (2) if an appropriate bounty was sent and (3) if the
+sender is the exploitable contract. Is this the case, then the vulnerability is
+marked paid, the public key is stored and a `Pay(uint256 id, address
+exploitable, uint256 bounty)` event is emitted to inform the attacker.
+
+As the contract owner's public key is now available to the attacker, the
+vulnerability can be encrypted using a public-key encryption scheme.
+Subsequently, the attacker uploads it to IPFS and shares the hash by calling
+`reveal(uint256 vulnId, string hash)`. In case (1) the vulnerability exists,
+(2) the attacker sends the vulnerability from the account that committed it and
+(3) the vulnerability was previously paid for, the hash is revealed to the
+contract owner through an event `Reveal(uint256 id, string hash)`.
+
+Using the revealed hash, the contract owner can now download the report from
+IPFS, decrypt it using their private key and study it. They now have two
+options: (1) Decide to ignore the vulnerability and therefore send the
+bounty back to themselves. (2) Decide to give away under the vulnerability and
+hence shut down their contract. Is this the case, the negotiator sends the
+bounty to the attacker's account. Nonetheless, the Negotiator emits a
+`Decide(uint256 vulnId, bool decision)` event and closes the vulnerability.
+
+In this section, we discussed a possible happy path of disclosing a
+vulnerability. Of course, there are many other branches to it. To highlight
+these, we discuss the incentives at play in the next section.
 
 ## Incentives
+
+Attack vectors
+- Attacker submits a wrong damage estimate
+- Contract owner has dynamic bountyamount function
+- Attacker never submits vulnerability in reveal (we need a time out)
+
+Validation of incentives
+Ultimately, 0xdeface's goal is to save as much ETH from getting stolen as
+possible. While we proposed a concrete solution to this problem, we'll most
+certainly have to experiment before actually launching.
 
 ## Business model and funding
 
@@ -260,6 +325,14 @@ submitting and eventually exiting a vulnerability.
 4. Even though Gnosis's DAOStack contracts were audited before deploying them
    to the Ethereum main net, they got drained as part of their extended bounty
    program within hours [3].
+5. We acknowledge that setting `damage` to an incorrect value could potentially
+   lead to an attack vector, where the attacker overstates the seriousness of a
+   vulnerability. We see it, however, in the responsibility for the contract
+   owner to do the math on the vulnerability. Is their decision to decline a
+   legit vulnerability because of an incorrectly submitted `damage` estimate,
+   so can the `decide`'s `string reason` be used to state so.
+6. 0xdeface plans to deploy a Ethereum blockchain listener that contract owners
+   can subscribe to via email to get the latest events emitted.
 
 ## References
 
@@ -274,3 +347,4 @@ submitting and eventually exiting a vulnerability.
 1. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
 1. https://hackerone.com/augurproject
 1. https://twitter.com/mythril_watch
+1. https://github.com/libertylocked/eth-ecies
