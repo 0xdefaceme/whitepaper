@@ -210,9 +210,9 @@ functions. These being:
 
 1. `exploitableVersion()`: Returning the version of the incentive game
 1. `implementsExploitable()`: Returning the attacker's potential reward in Wei,
-1. `pay(uint256 bountyId, string publicKey)`: For the owner to submit their
+1. `pay(uint256 vulnId, string publicKey)`: For the owner to submit their
    public key along with the attacker's reward.
-1. `decide(uint256 bountyId, bool decision)`: For the owner to decide on the
+1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
    seriousness of a vulnerability
 1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
@@ -243,7 +243,7 @@ further understanding about *how* the system works, we're going to ignore
 incentives for now. To simplify, we're instead going to make a few assumptions.
 (1) The exploitable contract implements the Exploitable EIP standard. (2) The
 attacker is willing to participate in 0xdeface's incentive game.  To not blow
-the scope of this paper, we're only going to describe the happy path here.
+the scope of this paper, we're only going to describe one happy path here.
 We'll discuss attack vectors in one of the following sections.
 
 As figure 1 illustrates, the process starts with the attacker finding a
@@ -253,9 +253,9 @@ vulnerability in the exploitable contract.
 
 The attacker hence calls `commit(IExploitable exploitable, uint256 damage)` on
 the negotiator contract. `exploitable` here being the vulnerable contract and
-`damage` the potential damage the vulnerability could cause. Note that in this
-first iteration, we allow the attacker to single-handedly set the estimated
-damage [footnote 5].
+`damage` the potential damage the vulnerability could cause (denoted in "Wei").
+Note that in this first iteration, we allow the attacker to single-handedly set
+the estimated damage [footnote 5].
 
 Calling `commit`, the negotiator contract will make sure that `IExploitable
 exploitable` implements `implementsExploitable()` and that `damage` doesn't
@@ -327,12 +327,12 @@ certainly have to experiment before actually launching.
    program within hours [3].
 5. We acknowledge that setting `damage` to an incorrect value could potentially
    lead to an attack vector, where the attacker overstates the seriousness of a
-   vulnerability. We see it, however, in the responsibility for the contract
-   owner to do the math on the vulnerability. Is their decision to decline a
-   legit vulnerability because of an incorrectly submitted `damage` estimate,
-   so can the `decide`'s `string reason` be used to state so.
-6. 0xdeface plans to deploy a Ethereum blockchain listener that contract owners
-   can subscribe to via email to get the latest events emitted.
+   vulnerability's damage. We see it, however, in the responsibility for the
+   contract owner to do the math on the vulnerability. Is their decision to
+   decline a legit vulnerability because of an incorrectly submitted `damage`
+   estimate, so can `decide`'s `string reason` be used to state so.
+6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
+   owners can subscribe to via email to updates on the latest emitted events.
 
 ## References
 
