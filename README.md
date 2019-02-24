@@ -1,6 +1,6 @@
 # 0xdeface.me Whitepaper
 
-> A standard to settle Ethereum smart contracts gracefully in case of
+> A standard to settle Ethereum smart contracts fairly in case of
 > vulnerabilities.
 
 ## Abstract
@@ -9,59 +9,58 @@ There's an estimated 3 million ETH (350 million USD) locked in vulnerable smart
 contracts today. While, curiously, only 0.30% or 9,094 ETH (1 million USD) have
 been claimed by attackers, smart contracts continue to be attacked on a daily
 basis [1]. In this paper, we present a novel scheme to prevent contracts from
-getting their funds drained by attackers. We introduce an game that incentivizes
-attackers to confidentially submit vulnerabilities directly to a contract's
-owner. The game's goal being to make contract attacking a worthwhile occupation
-for attackers while providing a secure protocol for contract owners to settle
-their contracts, fairly returning users' funds.
+getting their funds drained by attackers. We introduce a game (0xdeface.me)
+that incentivizes attackers to confidentially submit vulnerabilities directly
+to a contract's owner, transforming contract attacking from a zero-sum game
+to a positive-sum game. 0xdeface's goal is to make contract attacking
+a worthwhile occupation while providing a secure protocol for owners to settle
+their contracts fairly by returning users' funds.
 
 ## Introduction
 
 Smart contracts represent a fundamental paradigm shift in programming. Ever
 since their practical implementation through Ethereum, they allow for
-permissionless and transparent transfer of monetary value. As the idea is still
-recent, many best-practices are under active development and will take years to
-stabilize.
+permissionless and transparent transfer of monetary value. As their advent is
+still recent, many best-practices are under active development and will take
+years to stabilize.
 
-In Ethereum, smart contracts are written in Solidity or Vyper, with both
-languages being respectively inspired by languages from the traditional
-software world: JavaScript and Python. Both in Solidity and Vyper's case, the
-base language was slightly adjusted to feature new primitives making transfer
-of monetary value possible.  Not always with great success however.  Especially
-Solidity's striking similarity to JavaScript has often provoked criticism. The
-accusation of having too relaxed design principles for transferring money
-securely being thrown around on the Internet frequently. And indeed, Solidity
-features odd design choices. To name a few: (1) It doesn't have under- and
-overflow protection, (2) interfaces are not enforced and (3) similar modifiers
-are easily confused as their naming is indistinguishable.
+In Ethereum, smart contracts are written in Solidity or Vyper, with both being
+respectively inspired by languages from the traditional software world:
+JavaScript and Python. In both Solidity and Vyper's case, the base language was
+slightly adjusted to feature new primitives making transfer of monetary value
+possible.  Not always with great success, however.  Especially Solidity's
+striking similarity to JavaScript has provoked criticism, the accusation of
+having too relaxed design principles for transferring money securely being
+thrown around on the Internet frequently. And indeed, Solidity features odd
+design choices. To name a few: (1) It doesn't have under- and overflow
+protection, (2) interfaces are not enforced and (3) similar modifiers are
+easily confused as their naming is virtually indistinguishable.
 
-Strikingly, these choices paired with a lack of best practices, unexperienced
-developers and lots of money at stake caused several million ETH to be stolen
-to this present day. Most notably in June 2016, when an attacker drained 3.6
-million ETH from TheDAO [2], forcing the Ethereum community to hard fork the
-network to regain access to the funds. Though much development has taken place
-over the last years with (1) the community working together towards best
-practices, (2) developers becoming more experienced with the use cases and (3)
-professional audit firms eliminating risks pre-launch, the fact of the matter
-that writing secure smart contracts is hard remains. To this day, even the most
-experienced teams and their world-class auditors make mistakes [3] and will,
-going forward.
+Unsurprisingly, these choices paired with a lack of best practices,
+inexperienced developers and lots of money at stake caused several million ETH
+to be stolen. Most notably in June 2016, when an attacker drained 3.6 million
+ETH from TheDAO [2], forcing the Ethereum community to hard fork the network to
+regain access to the funds. Though much improvement has taken place over the
+last years with (1) the community working together towards best practices, (2)
+developers becoming more experienced and (3) professional audit firms
+eliminating risks pre-launch, writing secure smart contracts remains difficult.
+To this day, even the most experienced teams and their world-class auditors
+make mistakes [3] and will, going forward.
 
-To further understanding of this phenomenon and to give proper context to the
-following sections, we'd like to highlight the incentives at play.
-Specifically, we'd like to elaborate on the motivations to attack contracts and
-how we think 0xdeface.me can help to improve the situation from an
-ecosystem-wide zero-sum game to a positive-sum game.
+To further understanding of this phenomenon and to give proper context, we'd
+like to highlight the incentives at play.  Specifically, we'd like to elaborate
+on the motivations to attack contracts and how we think 0xdeface.me can help to
+improve the situation from an ecosystem-wide zero-sum game to a positive-sum
+game.
 
 ## Motivation
 
-The frequency and ingenuity of smart contract attacks will increase in the
-future. With the release of automated auditing suites like Consensys's Mithril
-[4] and TrailOfBits's ManiCore [5], documentation of common vulnerabilities
-and the growing monetary value at stake, we might soon see machines attacking
-smart contracts autonomously.
+With the release of automated auditing suites like Consensys's Mithril [4] and
+TrailOfBits's ManiCore [5], documentation of common vulnerabilities and the
+growing monetary value at stake, we'll see the frequency and ingenuity of smart
+contract attacks increase in the future. 
 
-With this assumption in mind, we discuss the motives at play for (1) why it is
+In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
 difficult to maintain smart contracts and (3) why this leads to a zero-sum game
 for all participants involved. Furthermore, we motivate why there should be an
@@ -69,14 +68,11 @@ EIP standard and marketplace for consensually exchanging vulnerabilities
 between attackers and contract owners. To begin with, we elaborate reasons for
 why it is seemingly rational for an attacker to target smart contracts.
 
-Smart contracts are a playground for financial innovation and experimentation.
-They often implement unprecedented incentive schemes. In addition, ever since
-the dawn of Bitcoin and Ethereum, there has been a commonly shared conviction
-of the community that transparency, decentralization and permission-less
-innovation is key to success of the respective ecosystems.
-
+Ever since the dawn of Bitcoin and Ethereum, there has been a commonly shared
+conviction of the community that transparency, decentralization and
+permission-less innovation is the key to success of the respective ecosystems.
 For several reasons, developing a smart contract as closed source is hence
-considered an obvious faux-pas. (1) Users should be able comprehend the full
+considered a faux-pas. (1) Users should be able comprehend the full
 functionality of a smart contract (transparency). (2) Nobody must be able to
 exercise full control over a contract (decentralization). (3) Everybody must be
 be allowed, without the incurrence of a cost, to innovate on any part of the
@@ -90,44 +86,42 @@ easily accessible to attackers.
 0xdeface ran a several week long experiment where we, using an Ethereum full
 node, audited and crawled the Ethereum blockchain and GitHub for newly uploaded
 smart contracts. Through leaving their `/build` folder in their GitHub
-repository, contract repositories could simply be searched by their address
-using the GitHub search API. While the setup of this experiment was trivial, it
+repository, contract repositories could simply be found by their address using
+the GitHub search API.  While the setup of this experiment was trivial, it
 yielded many potential opportunities where contracts were vulnerable and easily
-exploitable by simply looking at the source code. In many cases, Mythril, the
-automatic auditing tool, even hinted towards the specific function and
-vulnerability to exploit [9].  Even more trivial than that is of course to
-occasionally scan Etherscan's "Verified Contracts" page [5] for smart contract
-source code [footnote 1].
-
-All this to say that while open sourcing smart contracts might increase security
+exploitable. In many cases, Mythril, the automatic auditing tool, even hinted
+towards the specific function and vulnerability to exploit [9].  Even more
+trivial than that is of course to occasionally scan Etherscan's "Verified
+Contracts" page [5] for smart contract source code [footnote 1]. All this to
+say that while open sourcing smart contracts might increase security
 ecosystem-wide, it may not necessarily for the individual contract.
 
 Once an attacker has access to a contract's source code, they can setup a local
 environment using tools like Ganache, Truffle and Remix IDE. This local setup
 is then used to simulate attacks against the contract. Is a serious
 vulnerability found, the attacker can - given the deterministic nature of
-Ethereum - confidentially assess whether or not it can be used to drain funds
-on the main net contract. Using privacy-preserving technologies like TOR,
-Monero and Zcash, this makes attacks efficient, cheap, largely anonymous and
-therefore rational for an attacker.
+Ethereum - confidentially assess whether it can be used to drain funds on the
+main net contract. Using privacy-preserving technologies like TOR, Monero and
+Zcash, this makes attacks efficient, cheap, largely anonymous and therefore
+rational for an attacker.
 
 Now that we've given reasons for why attacking smart contracts is rational,
 we'd like to elaborate why it is difficult for owners to maintain their
 contracts once deployed.
 
-In essence there's one simply reason: Smart contracts are immutable. Every
+In essence there's a simple reason: Smart contracts are immutable. Every
 contract uploaded to the Ethereum network gets assigned an address, that is
-generated using the deployer's address and a nounce. This unique identifier is
-then used by clients to interact with the contract. Today, Ethereum smart
-contracts cannot be changed in place [footnote 2].  A contract owner's options
-are hence limited to the following maintenance schemes: (1) Opt to build an
-upgradeable contract using proxy-patterns or (2) deploy a revised version of
-the contract and inform users about the change.
+generated using the deployer's address and a nonce. This address is then used
+by clients to interact with the contract. Today, Ethereum smart contracts
+cannot be changed in place [footnote 2].  A contract owner's options are hence
+limited to the following maintenance schemes: (1) Opt to build an upgradeable
+contract using proxy-patterns or (2) deploy a revised version of the contract
+and inform users about the change.
 
 Unfortunately, both options come with significant negatives: (1) An upgradeable
 proxy contract is inherently not permissionless and/or decentralized. Though
-implementation-specific it likely defines an owner that is able to change the
-proxy routing such that potentially user's funds could get, in the worst case,
+implementation-specific, it likely defines an owner that is able to change the
+proxy routing such that potentially users' funds could get, in the worst case,
 stolen. (2) Informing users and updating apps to the newly generated contract
 address is cumbersome, trust-maximizing and non-scalable. It comes with
 increased scrutiny by the community, potential loss of credibility and
@@ -135,56 +129,51 @@ significant cost.
 
 While in the traditional software world vulnerabilities can simply be fixed in
 minutes by identifying, fixing and redeploying the software with the same
-state, due to Ethereum's immutability property a vulnerability is the
-worst-case scenario for every business in the ecosystem. Maintaining deployed
-smart contracts is, and will be, difficult.
+state, Ethereum's immutability property makes mitigating vulnerabilities 
+non-trivial. For many businesses in the ecosystem, smart contract
+vulnerabilities might in fact be a worst-case scenario. We hence conclude that
+maintaining deployed contracts is, and will be, difficult.
 
-Which brings us to part three of this motivation: Why attacking smart contracts
-is currently a zero-sum game. Firstly, we'll argue why attackers may not be
-incentivized to attack contracts. Secondly, we highlight the problems of
-contract owners suffering an attack. Third, we state the role of the user in
-this situation.
+Which brings us to why attacking smart contracts is currently a zero-sum game.
+Firstly, we'll argue why attackers may not be incentivized to attack contracts.
+Secondly, we highlight the problems of contract owners suffering an attack.
+Thirdly, we state the role of the user in the situation.
 
-Attacking contracts, especially ones of widely-known projects in the space,
-often comes with several negatives for the attacker. (1) Increased (social)
-media coverage and community vigilance can lead to the hacker getting exposed.
-(2) Through crowd-sourcing the attacker's addresses, the stolen founds can
-effectively be frozen. This usually happens by exchanges blacklisting the
-attacker's accounts.  (3) Stolen funds can most likely not be exchanged into
-fiat, as most exchanges require KYC for larger amounts. (4) Most importantly,
-however, an attacker might be prosecuted by the law as stealing users' funds is
-a criminal offense in many jurisdictions [footnote 3]. This may be the reasons
-for why only 0.3% of Ethereum smart contracts funds have been claimed by
-attackers.
+Attacking contracts, especially ones of widely-known projects, often comes with
+several negatives for the attacker. (1) Increased (social) media coverage and
+community vigilance can lead to the hacker getting exposed.  (2) Through
+crowd-sourcing the attacker's addresses, the stolen founds can effectively be
+frozen. This usually happens by exchanges blacklisting the attacker's accounts.
+(3) Stolen funds can most likely not be exchanged into fiat, as most exchanges
+require KYC for larger amounts. (4) An attacker runs the risk of being
+prosecuted by the law as stealing users' funds is very likely a criminal
+offense in many jurisdictions [footnote 3]. These, amongst others, may be the
+reasons for why only 0.3% of vulnerable funds have been claimed by attackers
+[1].
 
 For a contract owner, the situation is equally tricky. (1) Bounty programs are
-often run before a contract gets deployed. After deployment, the contract
-comically speaking _becomes_ the bounty [8]. (2) As seen recently, audits can
-only limit vulnerabilities but not totally eradicate them [footnote 4]. (3) And
-as stated before, successful attacks to deployed contracts are often
-businesses' worst-case scenarios, going so far as to even the total shutdown of
-the operation (see: The DAO) [2].
+often run before a contract gets deployed. After deployment, the contract quite
+literally _becomes_ the bounty [8]. (2) As seen recently, audits can only limit
+decrease the risk of vulnerabilities but not totally eradicate them [footnote
+4]. (3) And as stated before, successful attacks to deployed contracts are
+often businesses' worst-case scenarios, going so far as to the total shutdown
+of the operation (see: The DAO) [2].
 
-In all of this, the contract users are probably off worst, however. They
-potentially use all their funds indefinitely and often have no way to
-participate in the governance decisions taken by a contract owner under fire.
-With regulation lagging behind, there is also a significant lack in
-accountability. Who's to blame for the loss of funds? The attacker? The
-contract owner?
+In all of this, the contract users are probably off worst. They potentially use
+all their funds and often have no way to participate in the governance
+decisions taken by a contract owner under fire.  With regulation lagging
+behind, there is also a significant lack in accountability. Who's to blame for
+the loss of user funds? The attacker? The contract owner?
 
-We hence conclude that attacking smart contracts in the Ethereum ecosystem is a
-zero-sum game. Attackers, owners and users all lose. It is at this point that
-we'd like to introduce 0xdeface. 0xdeface or EIP-XXXX is a standard to settle
-deployed smart contracts gracefully in favor of users and developers. Auditors
-confidentially submit disclosures to 0xdeface.me. Contract owners review
-disclosures. Do auditor and contract owner agree that a serious vulnerability
-has been found, then a contract can be settled gracefully by returning its
-users' funds. Auditors get rewarded with a bounty held in escrow by 0xdeface's
-Negotiator. 0xdeface makes attacking Ethereum smart contracts a positive-sum
-game.
-
-In the next section we go over the incentives of 0xdeface's Negotiator contract
-and 0xdeface's marketplace.
+Hence as all participants lose when contracts are attacked, we conclude this to
+be a zero-sum game. It is at this point that we introduce 0xdeface. 0xdeface or
+EIP-XXXX is a standard to settle deployed smart contracts gracefully in favor
+of users and developers. Auditors confidentially submit disclosures to
+0xdeface. Contract owners review disclosures. Do auditor and contract owner
+agree that a serious vulnerability has been found, then a contract can be
+settled fairly by returning its users' funds. Auditors get rewarded with a
+bounty held in escrow by 0xdeface's Negotiator. 0xdeface makes attacking
+Ethereum smart contracts a positive-sum game.
 
 ## Negotiator
 
