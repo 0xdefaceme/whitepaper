@@ -175,12 +175,76 @@ settled fairly by returning its users' funds. Auditors get rewarded with a
 bounty held in escrow by 0xdeface's Negotiator. 0xdeface makes attacking
 Ethereum smart contracts a positive-sum game.
 
+## Overview
+
+0xdeface's incentive game exists of multiple components. In this section we
+define what these components are and how they form an incentive game, making
+smart contract attacking a positive-sum game.
+
+### Negotiator
+
+The _negotiator_ is 0xdeface's central component. It is an Ethereum smart
+contract consisting of functions for (1) an attacker to _commit_ a
+vulnerability, (2) a contract owner to _pay_ for a vulnerability, (3) an
+attacker to _reveal_ a vulnerability and (4) a contract owner to _decide_ on a
+vulnerability. In essence, the negotiator allows an attacker to confidentially
+transmit a vulnerability to a contract owner using public-key cryptography
+(commit and reveal). In order for a contract owner to view a vulnerability,
+however, they'll have to send a stake to the negotiator (pay). Has a potential
+vulnerability been found, then it is in the contract owner's decision to either
+(decide):
+
+1. Shut down the contract, return its users' funds and send the stake to the
+   attacker; or
+1. Ignore the vulnerability, sending the stake back to the contract owner.
+
+In the following sections, we'll argue for why we believe the negotiator's
+scheme is in fact incentivizing fair settlements of contracts.
+
+### Exploitable EIP standard
+
+Another central component is 0xdeface's _exploitable_ EIP standard. It is an
+optional interface for developers to implement, potentially preventing their
+contracts from getting drained. Exploitable currently consists of seven
+functions. These being: 
+
+1. `exploitableVersion()`: Returning the version of the incentive game
+1. `implementsExploitable()`: Returning the attacker's potential reward in Wei,
+1. `pay(uint256 bountyId, string publicKey)`: For the owner to submit their
+   public key along with the attacker's reward.
+1. `decide(uint256 bountyId, bool decision)`: For the owner to decide on the
+   seriousness of a vulnerability
+1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
+1. `exit()`: Invoked when an owner decides to shut down the contract due to a
+   vulnerability.
+
+Going forward, we'll discuss how developers will profit from implementing the
+Exploitable EIP standard.
+
+### 0xdeface.me Website
+
+0xdeface.me serves as a hub of exchange for all stakeholders (owners, attackers
+and contract users). As already mentioned, we believe that there is a large
+untapped potential in improving the security of Ethereum smart contracts by
+gamifying the experience. 0xdeface.me allows contract owners to confidentially
+negotiate with attackers, attackers to be rewarded fairly and users to be able
+to participate in governance decisions. In the process of building this
+infrastructure, it is 0xdeface's goal to nurture a community of security
+professionals by providing tools for collaboration and automation.
+
+Now that we highlighted the main components, we will reiterate them in the
+following sections respectively, giving more details on how they're intended to
+work.
+
 ## Negotiator
 
-## Marketplace
+## Exploitable EIP Standard
 
-## Fee
+## 0xdeface.me Website
 
+## Business model and funding
+
+## Conclusion
 
 ## Footnotes
 
