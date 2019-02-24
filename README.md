@@ -135,7 +135,7 @@ vulnerabilities might in fact be a worst-case scenario. We hence conclude that
 maintaining deployed contracts is, and will be, difficult.
 
 Which brings us to why attacking smart contracts is currently a zero-sum game.
-Firstly, we'll argue why attackers may not be incentivized to attack contracts.
+Firstly, we argue why attackers may not be incentivized to attack contracts.
 Secondly, we highlight the problems of contract owners suffering an attack.
 Thirdly, we state the role of the user in the situation.
 
@@ -198,7 +198,7 @@ vulnerability been found, then it is in the contract owner's decision to either
    attacker; or
 1. Ignore the vulnerability, sending the stake back to the contract owner.
 
-In the following sections, we'll argue for why we believe the negotiator's
+In the following sections, we argue for why we believe the negotiator's
 scheme is in fact incentivizing fair settlements of contracts.
 
 ### Exploitable EIP standard
@@ -218,7 +218,7 @@ functions. These being:
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
    vulnerability.
 
-Going forward, we'll discuss how developers will profit from implementing the
+Going forward, we discuss how developers will profit from implementing the
 Exploitable EIP standard.
 
 ### 0xdeface.me Website
@@ -232,15 +232,14 @@ to participate in governance decisions. In the process of building this
 infrastructure, it is 0xdeface's goal to nurture a community of security
 professionals by providing tools for collaboration and automation.
 
-Now that we highlighted the main components, we will reiterate them in the
-following sections respectively, giving more details on how they're intended to
-work.
+Now that we highlighted the main components, we walk through the process of
+submitting and eventually exiting a vulnerability.
 
-## Negotiator
+## Process
 
-## Exploitable EIP Standard
+![alt text](https://raw.githubusercontent.com/0xdefaceme/whitepaper/master/assets/figure1.png)
 
-## 0xdeface.me Website
+## Incentives
 
 ## Business model and funding
 

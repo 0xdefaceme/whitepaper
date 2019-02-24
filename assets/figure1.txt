@@ -1,0 +1,18 @@
+title 0xdeface's process
+
+Attacker -> Negotiator: *Commit* vulnerability with damage estimate
+Negotiator -> Exploitable (and contract owner): *Event* about newly commited vulnerability
+Exploitable (and contract owner) -> Negotiator: *Pay* bounty to submit public key
+Negotiator -> Attacker: *Event* about bounty lock-in and public key
+Attacker -> Attacker: Write vulnerability report
+Attacker -> Attacker: Encrypt with Owner's public key
+Attacker -> Attacker: Publish encrypted report on IPFS
+Attacker -> Negotiator: *Reveal* IPFS hash
+Negotiator -> Exploitable (and contract owner): *Event* that IPFS hash was revealed
+Exploitable (and contract owner) -> Exploitable (and contract owner): Download encrypted vulnerability report
+Exploitable (and contract owner) -> Exploitable (and contract owner): Decrypt report with private key
+Exploitable (and contract owner) -> Exploitable (and contract owner): Study report to make a *decision*
+Exploitable (and contract owner) -> Negotiator: *Decide* to trigger *exit* on contract
+Negotiator -> Attacker: Send bounty
+
+Created with https://www.websequencediagrams.com
