@@ -403,11 +403,64 @@ that a vulnerability cannot be submitted as there is not bounty ETH stocked in
 the exploitable contract. In that case, the attacker should wait for the ETH to
 be restocked by the contract owner.
 
-## Go-to-market Strategy
+In this section, we gave an overview of the incentives built into the 0xdeface
+protocol. As we now covered all technical aspects of it, we move on to
+explaining how we intend to monetize the protocol.
 
-## Business model and funding
+## Limitations
+
+We acknowledge that fact that the economic incentives laid out in this document
+might not work as intended. We're especially concerned about attackers simply
+not being interested in playing 0xdeface's game as there's more monetary value
+to gain from simply draining to contract. It is our strong conviction, however,
+that there's generally more attackers out there willing to make a legal buck
+than an illegal.
+
+At last, only experimentation and utilization will tell if this is the case. To
+make this happen, 0xdeface is looking for funding.
+
+## Funding
+
+The 0xdeface protocol is currently being build by Tim Daubenschütz. Tim is
+actively looking for grants to sponsor his work. Here are some reasons on why
+you should fund Tim's work:
+
+> Hi, I'm Tim. Ever since discovering Bitcoin, I've been enthusiastic about
+> distributed systems. That's why in 2014 I joined the blockchain space as a
+> front end developer for ascribe.io (now BigchainDB / Ocean Protocol).  There
+> I built infrastructure for digital artists on Bitcoin. With the company
+> shifting focus towards BigchainDB, my role changed to product manager.  Very
+> quickly I became the central interface for external and internal developers
+> building on BigchainDB, managing a team of ten. During that time also got the
+> opportunity to generalize our efforts with ascribe.io. In 2016, I proudly
+> co-authored COALA IP, a blockchain-ready protocol for intellectual property
+> licensing.
+> When BigchainDB shifted focus again in 2017, I helped prepare the company to
+> launch their token, shadowed much of my CTO's work and helped to write the
+> early drafts of what would later become the Ocean Protocol technical
+> whitepaper.
+> After this crazy but fun ride, I took half a year off to recalibrate myself
+> and to recharge my batteries. As I had a lot of free time at hand I finally
+> got to work on all the projects I had postponed over the years. In 2018, I
+> hence built my own blockchain in Golang, ipfs-converter.com,
+> mycollectibles.io, gave workshops to refugees, backpacked China and learned
+> to play the piano. I deeply care about the future of the web, security,
+> decentralization, open source and permission-less innovation. Continuing
+> being able to work on 0xdeface protocol would be a dream come true.
+
+For inquiries email: tim@0xdeface.me or meet me over a delicious Sterni
+anywhere in Berlin.
+
+[To do: Put references from others here]
 
 ## Conclusion
+
+We propose 0xdeface protocol, a standard to fairly settle Ethereum smart
+contracts in case of vulnerabilities and a path towards making contract
+attacking a worthwhile occupation and a positive-sum game.
+
+[TODO, write a bit more]
+
 
 ## Footnotes
 
