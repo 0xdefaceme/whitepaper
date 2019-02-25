@@ -18,15 +18,14 @@ their contracts fairly by returning users' funds.
 
 ## Introduction
 
-Smart contracts represent a fundamental paradigm shift in programming. Ever
-since their practical implementation through Ethereum, they allow for
-permissionless and transparent transfer of monetary value. As their advent is
-still recent, many best-practices are under active development and will take
-years to stabilize.
+Smart contracts represent a paradigm shift in programming. Ever since their
+practical implementation through Ethereum, they allow for permissionless and
+transparent transfer of monetary value. As their advent is still recent, many
+best-practices are under active development and will take years to stabilize.
 
-In Ethereum, smart contracts are written in Solidity or Vyper, with both being
+In Ethereum, smart contracts are written in Solidity or Vyper. Both being
 respectively inspired by languages from the traditional software world:
-JavaScript and Python. In both Solidity and Vyper's case, the base language was
+JavaScript and Python. In both Solidity's and Vyper's case, the base language was
 slightly adjusted to feature new primitives making transfer of monetary value
 possible.  Not always with great success, however.  Especially Solidity's
 striking similarity to JavaScript has provoked criticism, the accusation of
@@ -62,11 +61,11 @@ contract attacks increase in the future.
 
 In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
-difficult to maintain smart contracts and (3) why this leads to a zero-sum game
-for all participants involved. Furthermore, we motivate why there should be an
-EIP standard and marketplace for consensually exchanging vulnerabilities
-between attackers and contract owners. To begin with, we elaborate reasons for
-why it is seemingly rational for an attacker to target smart contracts.
+difficult to maintain smart contracts and (3) why the situation leads to a
+zero-sum game. Furthermore, we motivate why there should be an EIP standard and
+marketplace for consensually exchanging vulnerabilities between attackers and
+contract owners. To begin with, we elaborate reasons for why it is seemingly
+rational for an attacker to target smart contracts.
 
 Ever since the dawn of Bitcoin and Ethereum, there has been a commonly shared
 conviction of the community that transparency, decentralization and
@@ -77,29 +76,27 @@ functionality of a smart contract (transparency). (2) Nobody must be able to
 exercise full control over a contract (decentralization). (3) Everybody must be
 be allowed, without the incurrence of a cost, to innovate on any part of the
 infrastructure (permission-less). It is therefore, and for other miscellaneous
-reasons, a best practice in the ecosystem to open source smart contracts. For
-an smart contract attackers, however, this yields a positive side effect.
-While, open sourcing smart contracts can lead to communities and ecosystems
-forming and best practices to develop, it also leads to source code being
-easily accessible to attackers.
+reasons, a best practice in the ecosystem to open source smart contracts. For a
+smart contract attacker, however, this yields a positive side effect. Namely,
+the source code being easily accessible.
 
 0xdeface ran a several week long experiment where we, using an Ethereum full
 node, audited and crawled the Ethereum blockchain and GitHub for newly uploaded
 smart contracts. Through leaving their `/build` folder in their GitHub
 repository, contract repositories could simply be found by their address using
 the GitHub search API.  While the setup of this experiment was trivial, it
-yielded many potential opportunities where contracts were vulnerable and easily
-exploitable. In many cases, Mythril, the automatic auditing tool, even hinted
-towards the specific function and vulnerability to exploit [9].  Even more
-trivial than that is of course to occasionally scan Etherscan's "Verified
-Contracts" page [5] for smart contract source code [footnote 1]. All this to
-say that while open sourcing smart contracts might increase security
-ecosystem-wide, it may not necessarily for the individual contract.
+yielded many potential opportunities where contracts were vulnerable. In many
+cases, Mythril, the automatic auditing tool, even hinted towards the specific
+function and vulnerability to exploit [9].  Even more trivial than that is of
+course to occasionally scan Etherscan's "Verified Contracts" page [5] for smart
+contract source code [footnote 1]. All this to say that while open sourcing
+smart contracts might increase security ecosystem-wide, it may not necessarily
+for the individual contract.
 
 Once an attacker has access to a contract's source code, they can setup a local
 environment using tools like Ganache, Truffle and Remix IDE. This local setup
 is then used to simulate attacks against the contract. Is a serious
-vulnerability found, the attacker can - given the deterministic nature of
+vulnerability found, then the attacker can - given the deterministic nature of
 Ethereum - confidentially assess whether it can be used to drain funds on the
 main net contract. Using privacy-preserving technologies like TOR, Monero and
 Zcash, this makes attacks efficient, cheap, largely anonymous and therefore
@@ -127,12 +124,12 @@ address is cumbersome, trust-maximizing and non-scalable. It comes with
 increased scrutiny by the community, potential loss of credibility and
 significant cost.
 
-While in the traditional software world vulnerabilities can simply be fixed in
-minutes by identifying, fixing and redeploying the software with the same
-state, Ethereum's immutability property makes mitigating vulnerabilities 
-non-trivial. For many businesses in the ecosystem, smart contract
-vulnerabilities might in fact be a worst-case scenario. We hence conclude that
-maintaining deployed contracts is, and will be, difficult.
+While in the traditional software world vulnerabilities can be fixed in minutes
+by identifying, fixing and redeploying the software with the same state,
+Ethereum's immutability property makes mitigating vulnerabilities non-trivial.
+For many businesses in the ecosystem, smart contract vulnerabilities might in
+fact be a worst-case scenario. We hence conclude that maintaining deployed
+contracts is, and will be, difficult.
 
 Which brings us to why attacking smart contracts is currently a zero-sum game.
 Firstly, we argue why attackers may not be incentivized to attack contracts.
@@ -154,10 +151,10 @@ reasons for why only 0.3% of vulnerable funds have been claimed by attackers
 For a contract owner, the situation is equally tricky. (1) Bounty programs are
 often run before a contract gets deployed. After deployment, the contract quite
 literally _becomes_ the bounty [8]. (2) As seen recently, audits can only limit
-decrease the risk of vulnerabilities but not totally eradicate them [footnote
-4]. (3) And as stated before, successful attacks to deployed contracts are
-often businesses' worst-case scenarios, going so far as to the total shutdown
-of the operation (see: The DAO) [2].
+the risk of vulnerabilities but not totally eradicate them [footnote 4]. (3)
+And as stated before, successful attacks to deployed contracts are often
+businesses' worst-case scenarios, going so far as to the total shutdown of the
+operation (see: The DAO) [2].
 
 In all of this, the contract users are probably off worst. They potentially use
 all their funds and often have no way to participate in the governance
@@ -167,23 +164,22 @@ the loss of user funds? The attacker? The contract owner?
 
 Hence as all participants lose when contracts are attacked, we conclude this to
 be a zero-sum game. It is at this point that we introduce 0xdeface. 0xdeface or
-EIP-XXXX is a standard to settle deployed smart contracts gracefully in favor
-of users and developers. Auditors confidentially submit disclosures to
-0xdeface. Contract owners review disclosures. Do auditor and contract owner
-agree that a serious vulnerability has been found, then a contract can be
-settled fairly by returning its users' funds. Auditors get rewarded with a
-bounty held in escrow by 0xdeface's Negotiator. 0xdeface makes attacking
-Ethereum smart contracts a positive-sum game.
+EIP-XXXX is a standard to settle vulnerable smart contracts fairly in favor of
+users and developers. Auditors confidentially submit disclosures to 0xdeface.
+Contract owners review disclosures. Do auditor and contract owner agree that a
+serious vulnerability has been found, then a contract can be settled fairly by
+returning its users' funds. Auditors get rewarded with a bounty held in escrow
+by 0xdeface's Negotiator. 0xdeface's goal is to make attacking Ethereum smart
+contracts a positive-sum game.
 
 ## Overview
 
-0xdeface's incentive game exists of multiple components. In this section we
-define what these components are and how they form an incentive game, making
-smart contract attacking a positive-sum game.
+0xdeface's incentive game consists of multiple components. In this section we
+define what these components are and how they form an incentive game.
 
 ### Negotiator
 
-The _negotiator_ is 0xdeface's central component. It is an Ethereum smart
+The _Negotiator_ is 0xdeface's central component. It is an Ethereum smart
 contract consisting of functions for (1) an attacker to _commit_ a
 vulnerability, (2) a contract owner to _pay_ for a vulnerability, (3) an
 attacker to _reveal_ a vulnerability and (4) a contract owner to _decide_ on a
@@ -203,34 +199,35 @@ scheme is in fact incentivizing fair settlements of contracts.
 
 ### Exploitable EIP standard
 
-Another central component is 0xdeface's _exploitable_ EIP standard. It is an
+Another central component is 0xdeface's _Exploitable_ EIP standard. It is an
 optional interface for developers to implement, potentially preventing their
 contracts from getting drained. Exploitable currently consists of seven
 functions. These being: 
 
 1. `exploitableVersion()`: Returning the version of the incentive game
-1. `implementsExploitable()`: Returning the attacker's potential reward in Wei,
+1. `implementsExploitable()`: Checking the contract's compatability
+1. `exploitableReward()`: Returning the attacker's potential reward in Wei
 1. `pay(uint256 vulnId, string publicKey)`: For the owner to submit their
-   public key along with the attacker's reward.
+   public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
    seriousness of a vulnerability
 1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
    vulnerability.
 
-Going forward, we discuss how developers will profit from implementing the
-Exploitable EIP standard.
+In one of the following sections, we discuss how developers will profit from
+implementing the Exploitable EIP standard.
 
 ### 0xdeface.me Website
 
 0xdeface.me serves as a hub of exchange for all stakeholders (owners, attackers
-and contract users). As already mentioned, we believe that there is a large
-untapped potential in improving the security of Ethereum smart contracts by
-gamifying the experience. 0xdeface.me allows contract owners to confidentially
-negotiate with attackers, attackers to be rewarded fairly and users to be able
-to participate in governance decisions. In the process of building this
-infrastructure, it is 0xdeface's goal to nurture a community of security
-professionals by providing tools for collaboration and automation.
+and contract users). We believe that there is a large untapped potential in
+improving the security of Ethereum smart contracts by gamifying the experience.
+0xdeface.me allows contract owners to confidentially negotiate with attackers,
+attackers to be rewarded fairly and users to be able to participate in
+governance decisions. In the process of building this infrastructure, it is
+0xdeface's goal to nurture a community of security professionals by providing
+tools for collaboration and automation.
 
 Now that we highlighted the main components, we walk through the process of
 commiting and eventually exiting a vulnerability.
@@ -242,9 +239,9 @@ _revealing_ and _deciding_ on a vulnerability. As it serves the purpose to
 further understanding about *how* the system works, we're going to ignore
 incentives for now. To simplify, we're instead going to make a few assumptions.
 (1) The exploitable contract implements the Exploitable EIP standard. (2) The
-attacker is willing to participate in 0xdeface's incentive game.  To not blow
-the scope of this paper, we're only going to describe one happy path here.
-We'll discuss attack vectors in one of the following sections.
+attacker is willing to participate in 0xdeface's incentive game. Additionally,
+we're only going to describe one happy path here. We'll discuss incentives and
+attack vectors in one of the following sections.
 
 As figure 1 illustrates, the process starts with the attacker finding a
 vulnerability in the exploitable contract.
@@ -255,7 +252,7 @@ The attacker hence calls `commit(IExploitable exploitable, uint256 damage)` on
 the negotiator contract. `exploitable` here being the vulnerable contract and
 `damage` the potential damage the vulnerability could cause (denoted in "Wei").
 Note that in this first iteration, we allow the attacker to single-handedly set
-the estimated damage [footnote 5].
+the estimation [footnote 5].
 
 Calling `commit`, the negotiator contract will make sure that `IExploitable
 exploitable` implements `implementsExploitable()` and that `damage` doesn't
@@ -267,7 +264,7 @@ address attacker)` event will be emitted to inform the contract owner [footnote
 Note that at this point no information about the vulnerability has been put
 online yet. As the vulnerability report will be encrypted using eth-ecies
 (public-key cryptography), the contract owner first has to share a public key
-with the attacker [10]. This is done by the contract owner calling `pay(uint
+with the attacker [10]. This is done by the contract owner calling `pay(uint256
 vulnId, string publicKey) public payable`. `pay` checks (1) if the
 vulnerability exists (2) if an appropriate bounty was sent and (3) if the
 sender is the exploitable contract. Is this the case, then the vulnerability is
@@ -278,33 +275,63 @@ As the contract owner's public key is now available to the attacker, the
 vulnerability can be encrypted using a public-key encryption scheme.
 Subsequently, the attacker uploads it to IPFS and shares the hash by calling
 `reveal(uint256 vulnId, string hash)`. In case (1) the vulnerability exists,
-(2) the attacker sends the vulnerability from the account that committed it and
-(3) the vulnerability was previously paid for, the hash is revealed to the
+(2) the attacker has sent the vulnerability from the account that committed it
+and (3) the vulnerability was previously paid for, the hash is revealed to the
 contract owner through an event `Reveal(uint256 id, string hash)`.
 
 Using the revealed hash, the contract owner can now download the report from
 IPFS, decrypt it using their private key and study it. They now have two
-options: (1) Decide to ignore the vulnerability and therefore send the
-bounty back to themselves. (2) Decide to give away under the vulnerability and
-hence shut down their contract. Is this the case, the negotiator sends the
-bounty to the attacker's account. Nonetheless, the Negotiator emits a
+options: (1) Decide to ignore the vulnerability and therefore send the bounty
+back to themselves. (2) Decide to give away under the vulnerability and hence
+shut down their contract. Do they decide to give in, then the negotiator sends
+the bounty to the attacker's account. Nonetheless, the Negotiator emits a
 `Decide(uint256 vulnId, bool decision)` event and closes the vulnerability.
 
 In this section, we discussed a possible happy path of disclosing a
-vulnerability. Of course, there are many other branches to it. To highlight
+vulnerability. Of course, there are many other branches. To highlight
 these, we discuss the incentives at play in the next section.
 
 ## Incentives
+
+Earlier in this paper we made the claim that 0xdeface transforms attacking
+smart contracts from a zero-sum game to a positive-sum game. As there are too
+many considerable human factors involved in the decision to maliciously drain a
+contract's funds, it would not make sense to outline a mathematical model of
+the problem here.  Instead, this section makes an argument for why attackers
+and contract owners will use the 0xdeface protocol in the future and how this
+becomes a positive-sum game.
+
+
+- contracts should remain open source
+- contracts should remain immutable, upgradeability should remain a bug
+- attacker:
+    - can actually spend the ETH earned in a bounty (bounty could still be huge)
+    - doesn't commit a crime
+    - has the option to brag with their hack
+    - less media exposure through attack (shitstorm and angry investors)
+    - gamification
+
+contract owner
+    - bounty programs while contract is deployed
+    - less media exposure through attack (shitstorm and angry investors)
+    - doesn't loose credibility anymore
+    - vulnerability mitigations can be efficient and relatively cheap, for sure
+    they're not a worst-case scenario anymore
+
+user
+    - funds are secured
+    - potential for taking part in the governance decision to settle the
+      contract
+
+- experimentation will be necessary to validate the incentives
+
+
+## Attack Vectors
 
 Attack vectors
 - Attacker submits a wrong damage estimate
 - Contract owner has dynamic bountyamount function
 - Attacker never submits vulnerability in reveal (we need a time out)
-
-Validation of incentives
-Ultimately, 0xdeface's goal is to save as much ETH from getting stolen as
-possible. While we proposed a concrete solution to this problem, we'll most
-certainly have to experiment before actually launching.
 
 ## Business model and funding
 
@@ -332,7 +359,7 @@ certainly have to experiment before actually launching.
    decline a legit vulnerability because of an incorrectly submitted `damage`
    estimate, so can `decide`'s `string reason` be used to state so.
 6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
-   owners can subscribe to via email to updates on the latest emitted events.
+   owners can subscribe to via email for updates on the latest emitted events.
 
 ## References
 
