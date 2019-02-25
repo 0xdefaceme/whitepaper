@@ -95,7 +95,7 @@ for the individual contract.
 
 Once an attacker has access to a contract's source code, they can setup a local
 environment using tools like Ganache, Truffle and Remix IDE. This local setup
-is then used to simulate attacks against the contract. Is a serious
+is then used to simulate attacks against the contract. Is a critical
 vulnerability found, then the attacker can - given the deterministic nature of
 Ethereum - confidentially assess whether it can be used to drain funds on the
 main net contract. Using privacy-preserving technologies like TOR, Monero and
@@ -167,7 +167,7 @@ be a zero-sum game. It is at this point that we introduce 0xdeface. 0xdeface or
 EIP-XXXX is a standard to settle vulnerable smart contracts fairly in favor of
 users and developers. Auditors confidentially submit disclosures to 0xdeface.
 Contract owners review disclosures. Do auditor and contract owner agree that a
-serious vulnerability has been found, then a contract can be settled fairly by
+critical vulnerability has been found, then a contract can be settled fairly by
 returning its users' funds. Auditors get rewarded with a bounty held in escrow
 by 0xdeface's Negotiator. 0xdeface's goal is to make attacking Ethereum smart
 contracts a positive-sum game.
@@ -205,12 +205,12 @@ contracts from getting drained. Exploitable currently consists of seven
 functions. These being: 
 
 1. `exploitableVersion()`: Returning the version of the incentive game
-1. `implementsExploitable()`: Checking the contract's compatability
+1. `implementsExploitable()`: Checking the contract's compatibility
 1. `exploitableReward()`: Returning the attacker's potential reward in Wei
 1. `pay(uint256 vulnId, string publicKey)`: For the owner to submit their
    public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
-   seriousness of a vulnerability
+   criticality of a vulnerability
 1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
    vulnerability.
@@ -230,7 +230,7 @@ governance decisions. In the process of building this infrastructure, it is
 tools for collaboration and automation.
 
 Now that we highlighted the main components, we walk through the process of
-commiting and eventually exiting a vulnerability.
+committing and eventually exiting a vulnerability.
 
 ## Process
 
@@ -293,45 +293,117 @@ these, we discuss the incentives at play in the next section.
 
 ## Incentives
 
-Earlier in this paper we made the claim that 0xdeface transforms attacking
+Earlier in this paper, we made the claim that 0xdeface transforms attacking
 smart contracts from a zero-sum game to a positive-sum game. As there are too
 many considerable human factors involved in the decision to maliciously drain a
 contract's funds, it would not make sense to outline a mathematical model of
-the problem here.  Instead, this section makes an argument for why attackers
-and contract owners will use the 0xdeface protocol in the future and how this
-becomes a positive-sum game.
+the problem here. Instead, this section makes an argument for why attackers and
+contract owners should use the 0xdeface protocol and why this transforms
+attacking contracts to a positive-sum game. We'll start by making the case for
+why contract owners should implement the exploitable EIP standard.
 
+Firstly, by implementing the exploitable EIP standard, contract owners now have
+the option to now dynamically set bounties on a main net contract. While there
+is of course a cost involved in offering this bounty to attackers, it comes
+with several benefits: (1) It can be grown dynamically with the size of the
+contract's balance. (2) A vulnerability may not be the worst-case scenario for
+the contract owner's business anymore (3) Shutting down and redeploying
+contracts becomes a canonical process. (4) Vulnerabilities will be disclosed
+directly and only to the contract owner instead of potentially being sold on
+secondary markets. (5) And investors and community are reassured that they're
+funds are insured. In case of a shut down, they'll likely not become angry or
+hesitant to invest.
 
-- contracts should remain open source
-- contracts should remain immutable, upgradeability should remain a bug
-- attacker:
-    - can actually spend the ETH earned in a bounty (bounty could still be huge)
-    - doesn't commit a crime
-    - has the option to brag with their hack
-    - less media exposure through attack (shitstorm and angry investors)
-    - gamification
+Secondly, attacking smart contracts becomes an attractive occupation. (1) An
+attacker doesn't have to commit a potential crime anymore. Note that the
+0xdeface protocol is consensual as only contracts implementing the exploitable
+EIP standard can be attacked. (2) The attacker doesn't have to worry about
+public exposure, as they're not stealing the money of investors anymore. In
+fact, the protocol allows for a "Proof of Attacking". It gives the attacker the
+possibility to increase their credibility within the community by publicizing
+attacks. In turn, this will foster an agile hacker community with quickly
+evolving best practices. (3) Most importantly, however, the attacker's
+scavenged funds are not in danger of being blacklisted anymore. As they were
+acquired legally, they can be e.g. exchanged for fiat to pay for living
+expenses.
 
-contract owner
-    - bounty programs while contract is deployed
-    - less media exposure through attack (shitstorm and angry investors)
-    - doesn't loose credibility anymore
-    - vulnerability mitigations can be efficient and relatively cheap, for sure
-    they're not a worst-case scenario anymore
+Lastly, users' funds are secured through the 0xdeface protocol. As an attacker
+will be more inclined to scavenge the bounty than draining the contract, user
+funds will not be affected by the disclosures of vulnerabilities. Additionally,
+the Exploitable EIP standard is generic enough to even allow users to vote on
+what to do in case of a vulnerability. This gives the option to make users part
+of the governance process in case of a imminent settlement.
 
-user
-    - funds are secured
-    - potential for taking part in the governance decision to settle the
-      contract
+As users, attackers and contract owners all gain by implementing the 0xdeface
+protocol, we believe this will transform the landscape of contract attacking
+into a positive sum game. In the next section, we'll elaborate on the potential
+attack vectors of the protocol and how we plan to mitigate them.
 
-- experimentation will be necessary to validate the incentives
+### Attack Vectors
 
+This section will list all known attack vectors of the protocol and answer how
+we plan to mitigate them. If, in the future, more attack vectors become known,
+we'll update this list.
 
-## Attack Vectors
+#### 1. What if an attacker doesn't want to participate in the 0xdeface protocol?
 
-Attack vectors
-- Attacker submits a wrong damage estimate
-- Contract owner has dynamic bountyamount function
-- Attacker never submits vulnerability in reveal (we need a time out)
+We believe we've made a compelling case for why an attacker should participate
+in the 0xdeface protocol in the previous sections. If an attacker wants to
+anyways drain a contract implementing the Exploitable EIP standard, they can of
+course do so. Ultimately, 0deface protocol doesn't have any mechanism to
+prevent irrational actors from doing damage.
+
+Additionally, we believe that there's a significant necessity of
+experimentation needed for 0xdeface protocol to find the right parameters. At
+this point we can only speculate about the optimal ratio between a contract's
+balance and the 0xdeface bounty. Is 10%, e.g. 100€ bounty for a contract with a
+balance of 1000€ enough?
+
+0xdeface is committed to experiment with those parameters before launching to
+give contract owners reliable heuristics.
+
+#### 2. What if an attacker submits a vulnerability but never reveals it?
+
+All vulnerability structs have a timeout property. In case an attacker submits
+a vulnerability, it's being paid by the contract owner but the hacker never
+calls `reveal()`, a timeout expires that allows the contract owner to reclaim
+the paid bounty.
+
+#### 3. What if a contract owner decides to ignore a legit vulnerability?
+
+A contract owner can of course decide to do so. In that case, however, their
+contract is at risk of getting drained by the attacker illegally.
+
+#### 4. What if a contract owner is able to adjust the value of `exploitableReward` mid-process?
+
+The Exploitable EIP standard is not opinionated about the implementation of
+`exploitReward`. A contract owner could hence implement an adjustable
+`exploitReward` function that when called on `pay` could yield a lower than
+expected bounty. Attackers should hence always audit the Exploitable EIP
+standard functions with care to make sure, they're not tricked in giving away a
+vulnerability for free.
+
+#### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
+
+It's of course in the contract owner's responsibility to make sure the damage
+is correctly estimated by the attacker. As the `damage` will ultimately dictate
+the bounty payout the attacker receives, the attacker might be tempted to set
+the `damage` estimate to a higher value. If this is the case, we recommend the
+contract owner to decline the vulnerability with e.g. `string reason = "Damage
+value incorrect"`. This will allow the attacker to submit the vulnerability
+again but with a correct `damage` estimate.
+
+#### 6. What if two critical vulnerabilities are found at the same time?
+
+It's in the contract owner's discretion to sort this out. If there are more
+than two vulnerabilities found at the same time, overall having a greater
+damage estimate than the exploitable's balance then, we recommend the contract
+owner to simply process them sequentially. There might additionally be the case
+that a vulnerability cannot be submitted as there is not bounty ETH stocked in
+the exploitable contract. In that case, the attacker should wait for the ETH to
+be restocked by the contract owner.
+
+## Go-to-market Strategy
 
 ## Business model and funding
 
@@ -353,7 +425,7 @@ Attack vectors
    to the Ethereum main net, they got drained as part of their extended bounty
    program within hours [3].
 5. We acknowledge that setting `damage` to an incorrect value could potentially
-   lead to an attack vector, where the attacker overstates the seriousness of a
+   lead to an attack vector, where the attacker overstates the criticality of a
    vulnerability's damage. We see it, however, in the responsibility for the
    contract owner to do the math on the vulnerability. Is their decision to
    decline a legit vulnerability because of an incorrectly submitted `damage`
