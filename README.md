@@ -11,10 +11,10 @@ been claimed by attackers, smart contracts continue to be attacked on a daily
 basis [1]. In this paper, we present a novel scheme to prevent contracts from
 getting their funds drained by attackers. We introduce a game (0xdeface.me)
 that incentivizes attackers to confidentially submit vulnerabilities directly
-to a contract's owner, transforming contract attacking from a zero-sum game
-to a positive-sum game. 0xdeface's goal is to make contract attacking
-a worthwhile occupation while providing a secure protocol for owners to settle
-their contracts fairly by returning users' funds.
+to a contract's owner We argue why we think this will transform contract
+attacking from a negative-sum game to a positive-sum game. 0xdeface's goal is
+to make contract attacking a worthwhile occupation while providing a secure
+protocol for owners to settle their contracts fairly by returning users' funds.
 
 ## Introduction
 
@@ -49,8 +49,8 @@ make mistakes [3] and will, going forward.
 To further understanding of this phenomenon and to give proper context, we'd
 like to highlight the incentives at play.  Specifically, we'd like to elaborate
 on the motivations to attack contracts and how we think 0xdeface.me can help to
-improve the situation from an ecosystem-wide zero-sum game to a positive-sum
-game.
+improve the situation from an ecosystem-wide negative-sum game to a
+positive-sum game.
 
 ## Motivation
 
@@ -62,10 +62,10 @@ contract attacks increase in the future.
 In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
 difficult to maintain smart contracts and (3) why the situation leads to a
-zero-sum game. Furthermore, we motivate why there should be an EIP standard and
-marketplace for consensually exchanging vulnerabilities between attackers and
-contract owners. To begin with, we elaborate reasons for why it is seemingly
-rational for an attacker to target smart contracts.
+negative-sum game. Furthermore, we motivate why there should be an EIP standard
+and marketplace for consensually exchanging vulnerabilities between attackers
+and contract owners. To begin with, we elaborate reasons for why it is
+seemingly rational for an attacker to target smart contracts.
 
 Ever since the dawn of Bitcoin and Ethereum, there has been a commonly shared
 conviction of the community that transparency, decentralization and
@@ -131,22 +131,22 @@ For many businesses in the ecosystem, smart contract vulnerabilities might in
 fact be a worst-case scenario. We hence conclude that maintaining deployed
 contracts is, and will be, difficult.
 
-Which brings us to why attacking smart contracts is currently a zero-sum game.
-Firstly, we argue why attackers may not be incentivized to attack contracts.
-Secondly, we highlight the problems of contract owners suffering an attack.
-Thirdly, we state the role of the user in the situation.
+Which brings us to why attacking smart contracts is currently a negative-sum
+game.  Firstly, we argue why attackers may not be incentivized to attack
+contracts.  Secondly, we highlight the problems of contract owners suffering an
+attack.  Thirdly, we state the role of the user in the situation.
 
 Attacking contracts, especially ones of widely-known projects, often comes with
 several negatives for the attacker. (1) Increased (social) media coverage and
 community vigilance can lead to the hacker getting exposed.  (2) Through
 crowd-sourcing the attacker's addresses, the stolen founds can effectively be
-frozen. This usually happens by exchanges blacklisting the attacker's accounts.
-(3) Stolen funds can most likely not be exchanged into fiat, as most exchanges
-require KYC for larger amounts. (4) An attacker runs the risk of being
-prosecuted by the law as stealing users' funds is very likely a criminal
-offense in many jurisdictions [footnote 3]. These, amongst others, may be the
-reasons for why only 0.3% of vulnerable funds have been claimed by attackers
-[1].
+frozen by exchanges, making contract attacking a negative-sum game.
+Essentially, the stolen ETH is taken out of the circulating supply. (3) Stolen
+funds can most likely not be exchanged into fiat, as most exchanges require KYC
+for larger amounts. (4) An attacker runs the risk of being prosecuted by the
+law as stealing users' funds is very likely a criminal offense in many
+jurisdictions [footnote 3]. These, amongst others, may be the reasons for why
+only 0.3% of vulnerable funds have been claimed by attackers [1].
 
 For a contract owner, the situation is equally tricky. (1) Bounty programs are
 often run before a contract gets deployed. After deployment, the contract quite
@@ -162,15 +162,15 @@ decisions taken by a contract owner under fire.  With regulation lagging
 behind, there is also a significant lack in accountability. Who's to blame for
 the loss of user funds? The attacker? The contract owner?
 
-Hence as all participants lose when contracts are attacked, we conclude this to
-be a zero-sum game. It is at this point that we introduce 0xdeface. 0xdeface or
-EIP-XXXX is a standard to settle vulnerable smart contracts fairly in favor of
-users and developers. Auditors confidentially submit disclosures to 0xdeface.
-Contract owners review disclosures. Do auditor and contract owner agree that a
-critical vulnerability has been found, then a contract can be settled fairly by
-returning its users' funds. Auditors get rewarded with a bounty held in escrow
-by 0xdeface's Negotiator. 0xdeface's goal is to make attacking Ethereum smart
-contracts a positive-sum game.
+Hence as the stolen ETH is essentially taken out of circulation, we conclude
+the situation to be a negative-sum game. It is at this point that we introduce
+0xdeface. 0xdeface or EIP-XXXX is a standard to settle vulnerable smart
+contracts fairly in favor of users and developers. Auditors confidentially
+submit disclosures to 0xdeface.  Contract owners review disclosures. Do auditor
+and contract owner agree that a critical vulnerability has been found, then a
+contract can be settled fairly by returning its users' funds. Auditors get
+rewarded with a bounty held in escrow by 0xdeface's Negotiator. 0xdeface's goal
+is to make attacking Ethereum smart contracts a positive-sum game.
 
 ## Overview
 
@@ -294,34 +294,32 @@ these, we discuss the incentives at play in the next section.
 ## Incentives
 
 Earlier in this paper, we made the claim that 0xdeface transforms attacking
-smart contracts from a zero-sum game to a positive-sum game. As there are too
-many considerable human factors involved in the decision to maliciously drain a
-contract's funds, it would not make sense to outline a mathematical model of
-the problem here. Instead, this section makes an argument for why attackers and
-contract owners should use the 0xdeface protocol and why this transforms
-attacking contracts to a positive-sum game. We'll start by making the case for
-why contract owners should implement the exploitable EIP standard.
+smart contracts from a negative-sum game to a positive-sum game. As there are
+too many considerable human factors involved in the decision to maliciously
+drain a contract's funds, it would not make sense to outline a mathematical
+model of the problem here. Instead, this section makes an argument for why
+attackers and contract owners should use the 0xdeface protocol and why this
+transforms attacking contracts to a positive-sum game. We'll start by making
+the case for why contract owners should implement the exploitable EIP standard.
 
-Firstly, by implementing the exploitable EIP standard, contract owners now have
-the option to now dynamically set bounties on a main net contract. While there
-is of course a cost involved in offering this bounty to attackers, it comes
-with several benefits: (1) It can be grown dynamically with the size of the
+By implementing the exploitable EIP standard, contract owners now have the
+option to now dynamically set bounties on a main net contract. While there is
+of course a cost involved in offering this bounty to attackers, it comes with
+several benefits: (1) It can be grown dynamically with the size of the
 contract's balance. (2) A vulnerability may not be the worst-case scenario for
-the contract owner's business anymore (3) Shutting down and redeploying
-contracts becomes a canonical process. (4) Vulnerabilities will be disclosed
-directly and only to the contract owner instead of potentially being sold on
-secondary markets. (5) And investors and community are reassured that they're
-funds are insured. In case of a shut down, they'll likely not become angry or
-hesitant to invest.
+the contract owner's business anymore. (3) Shutting down and redeploying
+contracts becomes a canonical process. (4) Vulnerabilities are disclosed
+directly to the contract owner and do not end up on secondary markets instead.
+(5) And investors and community are reassured that they're funds are insured.
+In case of a shut down, they'll likely not become angry or hesitant to invest.
 
 Secondly, attacking smart contracts becomes an attractive occupation. (1) An
-attacker doesn't have to commit a potential crime anymore. Note that the
-0xdeface protocol is consensual as only contracts implementing the exploitable
-EIP standard can be attacked. (2) The attacker doesn't have to worry about
-public exposure, as they're not stealing the money of investors anymore. In
-fact, the protocol allows for a "Proof of Attacking". It gives the attacker the
-possibility to increase their credibility within the community by publicizing
-attacks. In turn, this will foster an agile hacker community with quickly
+attacker doesn't have to commit a potential crime anymore [footnote 7].  (2)
+The attacker doesn't have to worry about public exposure, as they're not
+stealing the money of investors anymore. In fact, the protocol allows for a
+"Proof of Attacking". It gives the attacker the possibility to increase their
+credibility within the community by being able to prove that they're the
+attacker. We believe, this will foster an agile hacker community with quickly
 evolving best practices. (3) Most importantly, however, the attacker's
 scavenged funds are not in danger of being blacklisted anymore. As they were
 acquired legally, they can be e.g. exchanged for fiat to pay for living
@@ -329,15 +327,17 @@ expenses.
 
 Lastly, users' funds are secured through the 0xdeface protocol. As an attacker
 will be more inclined to scavenge the bounty than draining the contract, user
-funds will not be affected by the disclosures of vulnerabilities. Additionally,
-the Exploitable EIP standard is generic enough to even allow users to vote on
-what to do in case of a vulnerability. This gives the option to make users part
-of the governance process in case of a imminent settlement.
+funds will not be affected by the disclosures of vulnerabilities. In addition,
+the exploitable EIP standard is generic enough to allow users to vote on how to
+handle a vulnerability, e.g. via Aragon Agent [11]. This gives the option to
+make users part of the governance process in case of a imminent settlement.
 
-As users, attackers and contract owners all gain by implementing the 0xdeface
-protocol, we believe this will transform the landscape of contract attacking
-into a positive sum game. In the next section, we'll elaborate on the potential
-attack vectors of the protocol and how we plan to mitigate them.
+We lined out several arguments how 0xdeface protocol can provide utility to
+users, attackers and contract owners. As we believe the gained utility to be of
+higher value than the cost of paying bounties to attackers, we argue that
+0deface protocol will transform contract attacking to a positive-sum game.  In
+the next section, we'll elaborate on the potential attack vectors of the
+protocol and how we plan to mitigate them.
 
 ### Attack Vectors
 
@@ -349,15 +349,14 @@ we'll update this list.
 
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol in the previous sections. If an attacker wants to
-anyways drain a contract implementing the Exploitable EIP standard, they can of
+drain a contract implementing the Exploitable EIP standard anyways, they can of
 course do so. Ultimately, 0deface protocol doesn't have any mechanism to
 prevent irrational actors from doing damage.
 
-Additionally, we believe that there's a significant necessity of
-experimentation needed for 0xdeface protocol to find the right parameters. At
-this point we can only speculate about the optimal ratio between a contract's
-balance and the 0xdeface bounty. Is 10%, e.g. 100€ bounty for a contract with a
-balance of 1000€ enough?
+We believe that there's a significant necessity of experimentation needed for
+0xdeface protocol to find the right parameters. At this point we can only
+speculate about the optimal ratio between a contract's balance and the 0xdeface
+bounty. Is 10%, e.g. 100€ bounty for a contract with a balance of 1000€ enough?
 
 0xdeface is committed to experiment with those parameters before launching to
 give contract owners reliable heuristics.
@@ -380,7 +379,7 @@ The Exploitable EIP standard is not opinionated about the implementation of
 `exploitReward`. A contract owner could hence implement an adjustable
 `exploitReward` function that when called on `pay` could yield a lower than
 expected bounty. Attackers should hence always audit the Exploitable EIP
-standard functions with care to make sure, they're not tricked in giving away a
+standard functions carefully to make sure, they're not tricked in giving away a
 vulnerability for free.
 
 #### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
@@ -390,7 +389,7 @@ is correctly estimated by the attacker. As the `damage` will ultimately dictate
 the bounty payout the attacker receives, the attacker might be tempted to set
 the `damage` estimate to a higher value. If this is the case, we recommend the
 contract owner to decline the vulnerability with e.g. `string reason = "Damage
-value incorrect"`. This will allow the attacker to submit the vulnerability
+value too high/low"`. This will allow the attacker to submit the vulnerability
 again but with a correct `damage` estimate.
 
 #### 6. What if two critical vulnerabilities are found at the same time?
@@ -399,22 +398,22 @@ It's in the contract owner's discretion to sort this out. If there are more
 than two vulnerabilities found at the same time, overall having a greater
 damage estimate than the exploitable's balance then, we recommend the contract
 owner to simply process them sequentially. There might additionally be the case
-that a vulnerability cannot be submitted as there is not bounty ETH stocked in
+where a vulnerability cannot be submitted as there is no bounty-ETH stocked in
 the exploitable contract. In that case, the attacker should wait for the ETH to
 be restocked by the contract owner.
 
 In this section, we gave an overview of the incentives built into the 0xdeface
 protocol. As we now covered all technical aspects of it, we move on to
-explaining how we intend to monetize the protocol.
+explaining how we intent to build the protocol.
 
 ## Limitations
 
 We acknowledge that fact that the economic incentives laid out in this document
 might not work as intended. We're especially concerned about attackers simply
 not being interested in playing 0xdeface's game as there's more monetary value
-to gain from simply draining to contract. It is our strong conviction, however,
-that there's generally more attackers out there willing to make a legal buck
-than an illegal.
+to gain from simply draining a contract illegally. It is our strong conviction,
+however, that there's generally more attackers out there willing to make a
+legal buck than an illegal.
 
 At last, only experimentation and utilization will tell if this is the case. To
 make this happen, 0xdeface is looking for funding.
@@ -445,22 +444,28 @@ you should fund Tim's work:
 > hence built my own blockchain in Golang, ipfs-converter.com,
 > mycollectibles.io, gave workshops to refugees, backpacked China and learned
 > to play the piano. I deeply care about the future of the web, security,
-> decentralization, open source and permission-less innovation. Continuing
-> being able to work on 0xdeface protocol would be a dream come true.
+> decentralization, open source and permission-less innovation.  Working on
+> 0xdeface protocol would be a dream come true.
 
 For inquiries email: tim@0xdeface.me or meet me over a delicious Sterni
 anywhere in Berlin.
 
-[To do: Put references from others here]
+## Monetization
+
+We're big fans of projects like Uniswap [12]. Uniswap is an Ethereum Foundation
+grant recipient. It doesn't require a token and comes with no artificially
+added cost for users. That's awesome! We worry though that without at least a
+minimum viable business model Uniswap will eventually face funding problems.
+
+We hence propose the following to maintain and develop 0xdeface protocol: A
+small fee (approx. 5%) of every bounty paid out from 0xdeface's negotiator. As
+this fee would be trivially forked out of the protocol, we make it optional.
 
 ## Conclusion
 
 We propose 0xdeface protocol, a standard to fairly settle Ethereum smart
 contracts in case of vulnerabilities and a path towards making contract
 attacking a worthwhile occupation and a positive-sum game.
-
-[TODO, write a bit more]
-
 
 ## Footnotes
 
@@ -485,6 +490,8 @@ attacking a worthwhile occupation and a positive-sum game.
    estimate, so can `decide`'s `string reason` be used to state so.
 6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
    owners can subscribe to via email for updates on the latest emitted events.
+7. Note that the 0xdeface protocol is consensual as only contracts implementing
+   the exploitable EIP standard can be attacked. 
 
 ## References
 
@@ -499,4 +506,4 @@ attacking a worthwhile occupation and a positive-sum game.
 1. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
 1. https://hackerone.com/augurproject
 1. https://twitter.com/mythril_watch
-1. https://github.com/libertylocked/eth-ecies
+1. https://uniswap.io/
