@@ -471,9 +471,9 @@ make this happen, 0xdeface is looking for funding.
 
 ## Funding
 
-The 0xdeface protocol is currently being build by Tim Daubenschütz. Tim is
-actively looking for grants to sponsor his work. Here are some reasons on why
-you should fund Tim's work:
+The 0xdeface protocol is currently being build by Tim Daubenschütz and Alberto
+Granzotto. Alberto and Tim are actively looking for grants to sponsor their
+work. Here are some reasons on why you should fund Alberto and Tim:
 
 > Hi, I'm Tim. Ever since discovering Bitcoin, I've been enthusiastic about
 > distributed systems. That's why in 2014 I joined the blockchain space as a
@@ -498,7 +498,9 @@ you should fund Tim's work:
 > decentralization, open source and permission-less innovation.  Working on
 > 0xdeface protocol would be a dream come true.
 
-For inquiries email: tim@0xdeface.me or meet me over a delicious Sterni
+[TODO: Alberto add summary]
+
+For inquiries email: tim@0xdeface.me or meet us over a delicious Sterni
 anywhere in Berlin.
 
 ## Monetization
