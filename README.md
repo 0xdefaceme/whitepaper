@@ -25,9 +25,9 @@ best-practices are under active development and will take years to stabilize.
 
 In Ethereum, smart contracts are written in Solidity or Vyper. Both being
 respectively inspired by languages from the traditional software world:
-JavaScript and Python. In both Solidity's and Vyper's case, the base language was
-slightly adjusted to feature new primitives making transfer of monetary value
-possible.  Not always with great success, however.  Especially Solidity's
+JavaScript and Python. In both Solidity's and Vyper's case, the base language
+was slightly adjusted to feature new primitives making transfer of monetary
+value possible.  Not always with great success, however.  Especially Solidity's
 striking similarity to JavaScript has provoked criticism, the accusation of
 having too relaxed design principles for transferring money securely being
 thrown around on the Internet frequently. And indeed, Solidity features odd
@@ -514,7 +514,7 @@ this fee would be trivially forked out of the protocol, we make it optional.
 
 ## Conclusion
 
-We propose 0xdeface protocol, a standard to fairly settle Ethereum smart
+We propose 0xdeface, a fair and secure protocol to settle Ethereum smart
 contracts in case of vulnerabilities and a path towards making contract
 attacking a worthwhile occupation and a positive-sum game.
 
