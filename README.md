@@ -402,10 +402,6 @@ where a vulnerability cannot be submitted as there is no bounty-ETH stocked in
 the exploitable contract. In that case, the attacker should wait for the ETH to
 be restocked by the contract owner.
 
-In this section, we gave an overview of the incentives built into the 0xdeface
-protocol. As we now covered all technical aspects of it, we move on to
-explaining how we intent to build the protocol.
-
 #### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
 
 Assume an attacker finds a vulnerability and commits it. A contract owner could
@@ -456,6 +452,10 @@ could commit a time-locked vulnerability report to the negotiator and hence
 pressure the contract owner into making a decision within 24 hours. To our
 knowledge, such encryption is unfortunately not practically possible at this
 point. It is, however, a part of on-going research [11].
+
+In this section, we gave an overview of the incentives built into the 0xdeface
+protocol. As we now covered all technical aspects of it, we move on to
+explaining how we intent to build the protocol.
 
 ## Limitations
 
