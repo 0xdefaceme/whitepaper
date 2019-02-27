@@ -406,6 +406,57 @@ In this section, we gave an overview of the incentives built into the 0xdeface
 protocol. As we now covered all technical aspects of it, we move on to
 explaining how we intent to build the protocol.
 
+#### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
+
+Assume an attacker finds a vulnerability and commits it. A contract owner could
+now choose to not `pay` for the vulnerability and audit the contract code
+themselves. If they have enough time, they can find the vulnerability and shut
+down the contract in a controlled manner.
+
+There's a couple of reasons why we believe that it is not in the interest of
+the contract owner to engage in this behavior: (1) While taking their time to
+audit the contract, the attacker could drain it illegally. (2) In order to
+execute a controlled shut down, the attacker would have to a implement a
+non-compliant shut down procedure before deploying the contract. As attackers
+would immediately spot this, they'd be suspicious and hesitant to commit a
+vulnerability in the first place.  In fact, the contract owner runs the risk of
+having their contract drained illegally as they're considered to not playing
+the game fairly. (3) Assume a contract owner implements a non-compliant shut
+down procedure and an attacker submits a vulnerability anyway. If now the owner
+decides to shut down the contract in a non-compliant way, this will attract the
+attention of users and other attackers. They'd be able to see that the contract
+owner is not playing the game fairly. We believe that in this case, the
+contract owner's reputation would suffer significantly. To the point, in fact,
+where their future contracts would become untrusted by attackers.  Instead of
+committing vulnerabilities they'd simply drain future contract's illegally.
+
+Even though we believe the arguments above to be sufficient to stop this
+behavior from happening, there is a couple of things the protocol can help the
+attackers with.
+
+In the 0xdeface protocol an attacker is able to submit a hash of their
+unencrypted vulnerability report along with their `commit`. While this doesn't
+expose the report, it allows the attacker to prove publicly that they submitted
+a legit vulnerability at a certain point in time (time-stamping).  Does the
+contract owner in fact shut down the contract using a non-compliant procedure,
+then the attacker can reveal their time-stamped report and prove to the world
+that the owner didn't play the game fairly. We believe this would yield a
+backlash in the community.
+
+In cases where contract owners decide to audit the code themselves on reception
+of a vulnerability report, the attacker could also choose to announce the
+release of the time-stamped and unencrypted report publicly after e.g. 24
+hours. While we're unsure about the legality of this (sounds a lot like
+blackmailing), it would pressure the contract owner into paying for the
+vulnerability and fairly exiting the contract.
+
+Lastly, assume an attacker could encrypt a file such that it takes e.g. 24
+hours on any CPU to decrypt (non-serializable computation, VDFs). An attacker
+could commit a time-locked vulnerability report to the negotiator and hence
+pressure the contract owner into making a decision within 24 hours. To our
+knowledge, such encryption is unfortunately not practically possible at this
+point. It is, however, a part of on-going research [11].
+
 ## Limitations
 
 We acknowledge that fact that the economic incentives laid out in this document
@@ -507,3 +558,4 @@ attacking a worthwhile occupation and a positive-sum game.
 1. https://hackerone.com/augurproject
 1. https://twitter.com/mythril_watch
 1. https://uniswap.io/
+1. https://www.gwern.net/Self-decrypting-files
