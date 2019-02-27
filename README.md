@@ -303,8 +303,8 @@ transforms attacking contracts to a positive-sum game. We'll start by making
 the case for why contract owners should implement the exploitable EIP standard.
 
 By implementing the exploitable EIP standard, contract owners now have the
-option to now dynamically set bounties on a main net contract. While there is
-of course a cost involved in offering this bounty to attackers, it comes with
+option to dynamically set bounties on a main net contract. While there is of
+course a cost involved in offering this bounty to attackers, it comes with
 several benefits: (1) It can be grown dynamically with the size of the
 contract's balance. (2) A vulnerability may not be the worst-case scenario for
 the contract owner's business anymore. (3) Shutting down and redeploying
