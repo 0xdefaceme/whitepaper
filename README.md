@@ -6,15 +6,18 @@
 ## Abstract
 
 There's an estimated 3 million ETH (350 million USD) locked in vulnerable smart
-contracts today. While, curiously, only 0.30% or 9,094 ETH (1 million USD) have
-been claimed by attackers, smart contracts continue to be attacked on a daily
-basis [1]. In this paper, we present a novel scheme to prevent contracts from
-getting their funds drained by attackers. We introduce a game (0xdeface.me)
-that incentivizes attackers to confidentially submit vulnerabilities directly
-to a contract's owner We argue why we think this will transform contract
-attacking from a negative-sum game to a positive-sum game. 0xdeface's goal is
-to make contract attacking a worthwhile occupation while providing a secure
-protocol for owners to settle their contracts fairly by returning users' funds.
+contracts today. While only 0.30% or 9,094 ETH (1 million USD) have been
+claimed by attackers, smart contracts continue to be attacked on a daily basis
+[1]. In this paper, we present a novel scheme to incentivize responsible
+disclosure of smart contract vulnerabilities. We introduce a game (0xdeface.me)
+that incentivize a) security researchers to disclose vulnerabilities with
+contract owners instead of draining their funds; and b) contract owners to
+release a reward when a security breach is found and safely destroy contracts
+by returning funds to the stakeholders. We argue why we think this will
+transform contract attacking from a negative-sum game to a positive-sum game.
+The goal of 0xdeface is to make the Ethereum network safer by mitigating the
+impact of those vulnerabilities, hence increasing the adoption and usage of
+smart contracts to manage funds in a decentralized fashion.
 
 ## Introduction
 
@@ -57,7 +60,7 @@ positive-sum game.
 With the release of automated auditing suites like Consensys's Mithril [4] and
 TrailOfBits's ManiCore [5], documentation of common vulnerabilities and the
 growing monetary value at stake, we'll see the frequency and ingenuity of smart
-contract attacks increase in the future. 
+contract attacks increase in the future.
 
 In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
@@ -202,7 +205,7 @@ scheme is in fact incentivizing fair settlements of contracts.
 Another central component is 0xdeface's _Exploitable_ EIP standard. It is an
 optional interface for developers to implement, potentially preventing their
 contracts from getting drained. Exploitable currently consists of seven
-functions. These being: 
+functions. These being:
 
 1. `exploitableVersion()`: Returning the version of the incentive game
 1. `implementsExploitable()`: Checking the contract's compatibility
@@ -211,7 +214,7 @@ functions. These being:
    public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
    criticality of a vulnerability
-1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
+1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
    vulnerability.
 
@@ -544,7 +547,7 @@ attacking a worthwhile occupation and a positive-sum game.
 6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
    owners can subscribe to via email for updates on the latest emitted events.
 7. Note that the 0xdeface protocol is consensual as only contracts implementing
-   the exploitable EIP standard can be attacked. 
+   the exploitable EIP standard can be attacked.
 
 ## References
 
