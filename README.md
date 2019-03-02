@@ -35,8 +35,12 @@ striking similarity to JavaScript has provoked criticism, the accusation of
 having too relaxed design principles for transferring money securely being
 thrown around on the Internet frequently. And indeed, Solidity features odd
 design choices. To name a few: (1) It doesn't have under- and overflow
-protection, (2) interfaces are not enforced and (3) similar modifiers are
-easily confused as their naming is virtually indistinguishable.
+protection, (2) interfaces are not enforced, (3) similar modifiers are easily
+confused as their naming is virtually indistinguishable, (4) code reuse is
+implemented through multiple inheritance, a pattern known for it's complexity
+and corner cases, often avoided even by seasoned programmers, and (5) inline
+assembly is hard to write and, even more important, difficult to read, making
+the smart contract difficult to audit even for its users.
 
 Unsurprisingly, these choices paired with a lack of best practices,
 inexperienced developers and lots of money at stake caused several million ETH
@@ -46,8 +50,8 @@ regain access to the funds. Though much improvement has taken place over the
 last years with (1) the community working together towards best practices, (2)
 developers becoming more experienced and (3) professional audit firms
 eliminating risks pre-launch, writing secure smart contracts remains difficult.
-To this day, even the most experienced teams and their world-class auditors
-make mistakes [3] and will, going forward.
+To this day, even the most experienced teams [12] and their world-class
+auditors make mistakes [3] and will, going forward.
 
 To further understanding of this phenomenon and to give proper context, we'd
 like to highlight the incentives at play.  Specifically, we'd like to elaborate
@@ -554,13 +558,14 @@ attacking a worthwhile occupation and a positive-sum game.
 1. [PEREZ, Daniel; LIVSHITS, Benjamin. Smart Contract Vulnerabilities: Does
    Anyone Care?. arXiv preprint arXiv:1902.06710,
    2019.](https://arxiv.org/abs/1902.06710)
-1. https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562
-1. https://blog.gnosis.pm/security-update-on-the-dxdao-bug-bounty-52cec0f02cde
-1. https://github.com/ConsenSys/mythril-classic
-1. https://github.com/trailofbits
-1. https://etherscan.io/contractsVerified
-1. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
-1. https://hackerone.com/augurproject
-1. https://twitter.com/mythril_watch
-1. https://uniswap.io/
-1. https://www.gwern.net/Self-decrypting-files
+2. https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562
+3. https://blog.gnosis.pm/security-update-on-the-dxdao-bug-bounty-52cec0f02cde
+4. https://github.com/ConsenSys/mythril-classic
+5. https://github.com/trailofbits
+6. https://etherscan.io/contractsVerified
+7. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
+8. https://hackerone.com/augurproject
+9. https://twitter.com/mythril_watch
+10. https://uniswap.io/
+11. https://www.gwern.net/Self-decrypting-files
+12. https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7
