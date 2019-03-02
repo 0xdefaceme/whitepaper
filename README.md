@@ -48,10 +48,10 @@ to be stolen. Most notably in June 2016, when an attacker drained 3.6 million
 ETH from TheDAO [2], forcing the Ethereum community to hard fork the network to
 regain access to the funds. Though much improvement has taken place over the
 last years with (1) the community working together towards best practices, (2)
-developers becoming more experienced and (3) professional audit firms
-eliminating risks pre-launch, writing secure smart contracts remains difficult.
-To this day, even the most experienced teams [12] and their world-class
-auditors make mistakes [3] and will, going forward.
+developers becoming more experienced and (3) professional audit firms reducing
+risks pre-launch, writing secure smart contracts remains difficult.  To this
+day, even the most experienced teams [12] and their world-class auditors make
+mistakes [3] and will, going forward.
 
 To further understanding of this phenomenon and to give proper context, we'd
 like to highlight the incentives at play.  Specifically, we'd like to elaborate
