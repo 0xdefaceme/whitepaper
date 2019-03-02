@@ -76,30 +76,32 @@ and contract owners. To begin with, we elaborate reasons for why it is
 seemingly rational for an attacker to target smart contracts.
 
 Ever since the dawn of Bitcoin and Ethereum, there has been a commonly shared
-conviction of the community that transparency, decentralization and
-permission-less innovation is the key to success of the respective ecosystems.
+conviction of the community that transparency, decentralization, and
+permissionless innovation is the key to success of the respective ecosystems.
 For several reasons, developing a smart contract as closed source is hence
 considered a faux-pas. (1) Users should be able comprehend the full
 functionality of a smart contract (transparency). (2) Nobody must be able to
 exercise full control over a contract (decentralization). (3) Everybody must be
 be allowed, without the incurrence of a cost, to innovate on any part of the
-infrastructure (permission-less). It is therefore, and for other miscellaneous
-reasons, a best practice in the ecosystem to open source smart contracts. For a
-smart contract attacker, however, this yields a positive side effect. Namely,
-the source code being easily accessible.
+infrastructure (permissionless). It is therefore, and for other miscellaneous
+reasons, a best practice in the ecosystem to open source smart contracts. While
+we recognize that *security through obscurity* is not a viable defence
+mechanism, it should be acknowledge that for a smart contract attacker,
+however, this yields a positive side effect. Namely, the source code being
+easily accessible.
 
 0xdeface ran a several week long experiment where we, using an Ethereum full
 node, audited and crawled the Ethereum blockchain and GitHub for newly uploaded
 smart contracts. Through leaving their `/build` folder in their GitHub
-repository, contract repositories could simply be found by their address using
-the GitHub search API.  While the setup of this experiment was trivial, it
-yielded many potential opportunities where contracts were vulnerable. In many
-cases, Mythril, the automatic auditing tool, even hinted towards the specific
-function and vulnerability to exploit [9].  Even more trivial than that is of
-course to occasionally scan Etherscan's "Verified Contracts" page [5] for smart
-contract source code [footnote 1]. All this to say that while open sourcing
-smart contracts might increase security ecosystem-wide, it may not necessarily
-for the individual contract.
+repository, contract repositories could simply be found by querying for their
+address using the GitHub search API.  While the setup of this experiment was
+trivial, it yielded many potential opportunities where contracts were
+vulnerable. In many cases, Mythril, the automatic auditing tool, even hinted
+towards the specific function and vulnerability to exploit [9].  Even more
+trivial than that is of course to occasionally scan Etherscan's "Verified
+Contracts" page [5] for smart contract source code [footnote 1]. All this to
+say that while open sourcing smart contracts might increase security
+ecosystem-wide, it may not necessarily for the individual contract.
 
 Once an attacker has access to a contract's source code, they can setup a local
 environment using tools like Ganache, Truffle and Remix IDE. This local setup
@@ -118,10 +120,10 @@ In essence there's a simple reason: Smart contracts are immutable. Every
 contract uploaded to the Ethereum network gets assigned an address, that is
 generated using the deployer's address and a nonce. This address is then used
 by clients to interact with the contract. Today, Ethereum smart contracts
-cannot be changed in place [footnote 2].  A contract owner's options are hence
-limited to the following maintenance schemes: (1) Opt to build an upgradeable
-contract using proxy-patterns or (2) deploy a revised version of the contract
-and inform users about the change.
+cannot be changed in place [footnote 2]. The options for the contract owner are
+hence limited to the following maintenance schemes: (1) Opt to build an
+upgradeable contract using proxy-patterns or (2) deploy a revised version of
+the contract and inform users about the change.
 
 Unfortunately, both options come with significant negatives: (1) An upgradeable
 proxy contract is inherently not permissionless and/or decentralized. Though
@@ -132,12 +134,13 @@ address is cumbersome, trust-maximizing and non-scalable. It comes with
 increased scrutiny by the community, potential loss of credibility and
 significant cost.
 
-While in the traditional software world vulnerabilities can be fixed in minutes
-by identifying, fixing and redeploying the software with the same state,
-Ethereum's immutability property makes mitigating vulnerabilities non-trivial.
-For many businesses in the ecosystem, smart contract vulnerabilities might in
-fact be a worst-case scenario. We hence conclude that maintaining deployed
-contracts is, and will be, difficult.
+For traditional software, a fix for a vulnerability can be distributed by
+releasing a new version of the product (that might trigger other auto-update
+patterns) or, in case of a web application, the fix can be put in production
+within minutes. Ethereum's immutability property makes fixing vulnerabilities
+non-trivial. For many businesses in the ecosystem, smart contract
+vulnerabilities might in fact be a worst-case scenario. We hence conclude that
+maintaining deployed contracts is, and will be, difficult.
 
 Which brings us to why attacking smart contracts is currently a negative-sum
 game.  Firstly, we argue why attackers may not be incentivized to attack
@@ -177,8 +180,7 @@ contracts fairly in favor of users and developers. Auditors confidentially
 submit disclosures to 0xdeface.  Contract owners review disclosures. Do auditor
 and contract owner agree that a critical vulnerability has been found, then a
 contract can be settled fairly by returning its users' funds. Auditors get
-rewarded with a bounty held in escrow by 0xdeface's Negotiator. 0xdeface's goal
-is to make attacking Ethereum smart contracts a positive-sum game.
+rewarded with a bounty held in escrow by 0xdeface's Negotiator.
 
 ## Overview
 
