@@ -38,9 +38,10 @@ design choices. To name a few: (1) It doesn't have under- and overflow
 protection, (2) interfaces are not enforced, (3) similar modifiers are easily
 confused as their naming is virtually indistinguishable, (4) code reuse is
 implemented through multiple inheritance, a pattern known for it's complexity
-and corner cases, often avoided even by seasoned programmers, and (5) inline
-assembly is hard to write and, even more important, difficult to read, making
-the smart contract difficult to audit even for its users.
+and corner cases and often avoided even by seasoned programmers, that can lead
+to some non trivial bugs [13] and (5) inline assembly is hard to write and,
+even more important, difficult to read, making the smart contract difficult to
+audit even for its users.
 
 Unsurprisingly, these choices paired with a lack of best practices,
 inexperienced developers and lots of money at stake caused several million ETH
@@ -569,3 +570,4 @@ attacking a worthwhile occupation and a positive-sum game.
 10. https://uniswap.io/
 11. https://www.gwern.net/Self-decrypting-files
 12. https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7
+13. https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/
