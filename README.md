@@ -37,11 +37,10 @@ thrown around on the Internet frequently. And indeed, Solidity features odd
 design choices. To name a few: (1) It doesn't have under- and overflow
 protection, (2) interfaces are not enforced, (3) similar modifiers are easily
 confused as their naming is virtually indistinguishable, (4) code reuse is
-implemented through multiple inheritance, a pattern known for it's complexity
-and corner cases and often avoided even by seasoned programmers, that can lead
-to some non trivial bugs [13] and (5) inline assembly is hard to write and,
-even more important, difficult to read, making the smart contract difficult to
-audit even for its users.
+implemented through multiple inheritance, a complex pattern that can lead to
+non trivial bugs [13], and (5) inline assembly is hard to write and, even more
+important, difficult to read, making the smart contract difficult to audit even
+for its users.
 
 Unsurprisingly, these choices paired with a lack of best practices,
 inexperienced developers and lots of money at stake caused several million ETH
@@ -218,7 +217,7 @@ functions. These being:
 1. `implementsExploitable()`: Checking the contract's compatibility
 1. `exploitableReward()`: Returning the attacker's potential reward in Wei
 1. `pay(uint256 vulnId, string publicKey)`: For the owner to submit their
-   public key along with the attacker's reward
+   encryption public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
    criticality of a vulnerability
 1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and
