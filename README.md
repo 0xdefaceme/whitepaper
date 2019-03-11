@@ -355,7 +355,7 @@ make users part of the governance process in case of a imminent settlement.
 We lined out several arguments how 0xdeface protocol can provide utility to
 users, attackers and contract owners. As we believe the gained utility to be of
 higher value than the cost of paying bounties to attackers, we argue that
-0deface protocol will transform contract attacking to a positive-sum game.  In
+0xdeface protocol will transform contract attacking to a positive-sum game.  In
 the next section, we'll elaborate on the potential attack vectors of the
 protocol and how we plan to mitigate them.
 
@@ -372,7 +372,7 @@ become known, we'll update this list.
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol in the previous sections. If an attacker wants to
 drain a contract implementing the Exploitable EIP standard anyways, they can of
-course do so. Ultimately, 0deface protocol doesn't have any mechanism to
+course do so. Ultimately, 0xdeface protocol doesn't have any mechanism to
 prevent irrational actors from doing damage.
 
 We believe that there's a significant necessity of experimentation needed for
