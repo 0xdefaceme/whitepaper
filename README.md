@@ -469,6 +469,17 @@ pressure the contract owner into making a decision within 24 hours. To our
 knowledge, such encryption is unfortunately not practically possible at this
 point. It is, however, a part of on-going research [11].
 
+#### 8. Committing vulnerabilities will motivate other attackers to also audit a contract and drain it before it is able to exit.
+
+Assume an attacker submits a vulnerability. Another attacker could now listen
+to 0xdeface's negotiator and specifically target contracts that have committed
+vulnerabilities. If the attacker succeeded to drain the contract illegally
+before the vulnerable contract's exit, it would make the 0xdeface protocol
+useless. 
+
+We're planning to investigate Submarine Sends to prevent other attackers from
+scanning the blockchain and illegally draining committed contracts [15].
+
 In this section, we gave an overview of the protocol's attack vectors. In the
 next section, we outline foreseen limitations of it.
 
@@ -630,3 +641,4 @@ attacking a worthwhile occupation and a positive-sum game.
 12. https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7
 13. https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/
 14. https://github.com/leapdao/merkle-mine-contracts/blob/master/SPEC.md
+15. https://libsubmarine.org/
