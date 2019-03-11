@@ -479,11 +479,11 @@ might not work as intended. In this section, we highlight some limitations.
 
 ##### 1. The attacker is simply not interested in participating in the protocol.
 
-We're especially concerned about attackers simply
-not being interested in playing 0xdeface's game as there's more monetary value
-to gain from simply draining a contract illegally. It is our strong conviction,
-however, that there's generally more attackers out there willing to make a
-legal buck than an illegal.
+We're concerned about attackers simply not being interested in playing
+0xdeface's game as there's more monetary value to gain from simply draining a
+contract illegally. It is our strong conviction, however, that there's
+generally more attackers out there willing to make a legal buck than an
+illegal.
 
 ##### 2. What if the attacker simply emails the contract owner.
 
@@ -509,8 +509,31 @@ to make a conscious decision on what to do when their contract is vulnerable
 even before deploying it to the network. We argue that this alone will improve
 overall security.
 
-At last, only experimentation and utilization will tell if this is the case. To
-make this happen, 0xdeface is looking for funding.
+#### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
+
+Say a contract implementing the 0xdeface protocol is reported to be vulnerable
+by an attacker. In addition, assume this contract has a large number (e.g.
+1000) of "investors", so users that have a debt position in ETH or tokens with
+the contract. According to the previously outlined process of shutting down a
+contract, when a contract owner would decide to shut down the contract, the
+procedure could hit the Ethereum block gas limit. This would mean that the
+transaction becomes extremely expensive or fails to execute altogether.
+
+In theory, this problem could be mitigated by implementing a procedure inspired
+by Plasma exits. The exploitable contract implements an exit function that
+sends all its ETH to a safe contract called "Claimable". The contract owner
+scans the original exploitable contract for all users that have an open debt
+position.  The contract owner builds a Merkle tree over all the scanned
+investor addresses and balances and submits its root to Claimable. Now, any
+user with an open debt position is able to prove to Claimable their outstanding
+balance. By calling a function on Claimable that verifies their Merkle proof,
+the users can individually refund their ETH without having to worry about
+hitting the Ethereum block gas limit [14].
+
+We are planning to investigate this scheme further.
+
+At last, only experimentation and utilization will tell if these limitations
+are a given. To make this happen, 0xdeface is looking for funding.
 
 ## Funding
 
@@ -606,3 +629,4 @@ attacking a worthwhile occupation and a positive-sum game.
 11. https://www.gwern.net/Self-decrypting-files
 12. https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7
 13. https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/
+14. https://github.com/leapdao/merkle-mine-contracts/blob/master/SPEC.md
