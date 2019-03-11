@@ -6,15 +6,18 @@
 ## Abstract
 
 There's an estimated 3 million ETH (350 million USD) locked in vulnerable smart
-contracts today. While, curiously, only 0.30% or 9,094 ETH (1 million USD) have
-been claimed by attackers, smart contracts continue to be attacked on a daily
-basis [1]. In this paper, we present a novel scheme to prevent contracts from
-getting their funds drained by attackers. We introduce a game (0xdeface.me)
-that incentivizes attackers to confidentially submit vulnerabilities directly
-to a contract's owner We argue why we think this will transform contract
-attacking from a negative-sum game to a positive-sum game. 0xdeface's goal is
-to make contract attacking a worthwhile occupation while providing a secure
-protocol for owners to settle their contracts fairly by returning users' funds.
+contracts today. While only 0.30% or 9,094 ETH (1 million USD) have been
+claimed by attackers, smart contracts continue to be attacked on a daily basis
+[1]. In this paper, we present a novel scheme to incentivize responsible
+disclosure of smart contract vulnerabilities. We introduce a game (0xdeface.me)
+that incentivize a) security researchers to disclose vulnerabilities with
+contract owners instead of draining their funds; and b) contract owners to
+release a reward when a security breach is found and safely destroy contracts
+by returning funds to the stakeholders. We argue why we think this will
+transform contract attacking from a negative-sum game to a positive-sum game.
+The goal of 0xdeface is to make the Ethereum network safer by mitigating the
+impact of those vulnerabilities, hence increasing the adoption and usage of
+smart contracts to manage funds in a decentralized fashion.
 
 ## Introduction
 
@@ -32,8 +35,12 @@ striking similarity to JavaScript has provoked criticism, the accusation of
 having too relaxed design principles for transferring money securely being
 thrown around on the Internet frequently. And indeed, Solidity features odd
 design choices. To name a few: (1) It doesn't have under- and overflow
-protection, (2) interfaces are not enforced and (3) similar modifiers are
-easily confused as their naming is virtually indistinguishable.
+protection, (2) interfaces are not enforced, (3) similar modifiers are easily
+confused as their naming is virtually indistinguishable, (4) code reuse is
+implemented through multiple inheritance, a complex pattern that can lead to
+non trivial bugs [13], and (5) inline assembly is hard to write and, even more
+important, difficult to read, making the smart contract difficult to audit even
+for its users.
 
 Unsurprisingly, these choices paired with a lack of best practices,
 inexperienced developers and lots of money at stake caused several million ETH
@@ -41,10 +48,10 @@ to be stolen. Most notably in June 2016, when an attacker drained 3.6 million
 ETH from TheDAO [2], forcing the Ethereum community to hard fork the network to
 regain access to the funds. Though much improvement has taken place over the
 last years with (1) the community working together towards best practices, (2)
-developers becoming more experienced and (3) professional audit firms
-eliminating risks pre-launch, writing secure smart contracts remains difficult.
-To this day, even the most experienced teams and their world-class auditors
-make mistakes [3] and will, going forward.
+developers becoming more experienced and (3) professional audit firms reducing
+risks pre-launch, writing secure smart contracts remains difficult.  To this
+day, even the most experienced teams [12] and their world-class auditors make
+mistakes [3] and will, going forward.
 
 To further understanding of this phenomenon and to give proper context, we'd
 like to highlight the incentives at play.  Specifically, we'd like to elaborate
@@ -57,7 +64,7 @@ positive-sum game.
 With the release of automated auditing suites like Consensys's Mithril [4] and
 TrailOfBits's ManiCore [5], documentation of common vulnerabilities and the
 growing monetary value at stake, we'll see the frequency and ingenuity of smart
-contract attacks increase in the future. 
+contract attacks increase in the future.
 
 In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
@@ -68,30 +75,32 @@ and contract owners. To begin with, we elaborate reasons for why it is
 seemingly rational for an attacker to target smart contracts.
 
 Ever since the dawn of Bitcoin and Ethereum, there has been a commonly shared
-conviction of the community that transparency, decentralization and
-permission-less innovation is the key to success of the respective ecosystems.
+conviction of the community that transparency, decentralization, and
+permissionless innovation is the key to success of the respective ecosystems.
 For several reasons, developing a smart contract as closed source is hence
 considered a faux-pas. (1) Users should be able comprehend the full
 functionality of a smart contract (transparency). (2) Nobody must be able to
 exercise full control over a contract (decentralization). (3) Everybody must be
 be allowed, without the incurrence of a cost, to innovate on any part of the
-infrastructure (permission-less). It is therefore, and for other miscellaneous
-reasons, a best practice in the ecosystem to open source smart contracts. For a
-smart contract attacker, however, this yields a positive side effect. Namely,
-the source code being easily accessible.
+infrastructure (permissionless). It is therefore, and for other miscellaneous
+reasons, a best practice in the ecosystem to open source smart contracts. While
+we recognize that *security through obscurity* is not a viable defence
+mechanism, it should be acknowledge that for a smart contract attacker,
+however, this yields a positive side effect. Namely, the source code being
+easily accessible.
 
 0xdeface ran a several week long experiment where we, using an Ethereum full
 node, audited and crawled the Ethereum blockchain and GitHub for newly uploaded
 smart contracts. Through leaving their `/build` folder in their GitHub
-repository, contract repositories could simply be found by their address using
-the GitHub search API.  While the setup of this experiment was trivial, it
-yielded many potential opportunities where contracts were vulnerable. In many
-cases, Mythril, the automatic auditing tool, even hinted towards the specific
-function and vulnerability to exploit [9].  Even more trivial than that is of
-course to occasionally scan Etherscan's "Verified Contracts" page [5] for smart
-contract source code [footnote 1]. All this to say that while open sourcing
-smart contracts might increase security ecosystem-wide, it may not necessarily
-for the individual contract.
+repository, contract repositories could simply be found by querying for their
+address using the GitHub search API.  While the setup of this experiment was
+trivial, it yielded many potential opportunities where contracts were
+vulnerable. In many cases, Mythril, the automatic auditing tool, even hinted
+towards the specific function and vulnerability to exploit [9].  Even more
+trivial than that is of course to occasionally scan Etherscan's "Verified
+Contracts" page [5] for smart contract source code [footnote 1]. All this to
+say that while open sourcing smart contracts might increase security
+ecosystem-wide, it may not necessarily for the individual contract.
 
 Once an attacker has access to a contract's source code, they can setup a local
 environment using tools like Ganache, Truffle and Remix IDE. This local setup
@@ -110,10 +119,10 @@ In essence there's a simple reason: Smart contracts are immutable. Every
 contract uploaded to the Ethereum network gets assigned an address, that is
 generated using the deployer's address and a nonce. This address is then used
 by clients to interact with the contract. Today, Ethereum smart contracts
-cannot be changed in place [footnote 2].  A contract owner's options are hence
-limited to the following maintenance schemes: (1) Opt to build an upgradeable
-contract using proxy-patterns or (2) deploy a revised version of the contract
-and inform users about the change.
+cannot be changed in place [footnote 2]. The options for the contract owner are
+hence limited to the following maintenance schemes: (1) Opt to build an
+upgradeable contract using proxy-patterns or (2) deploy a revised version of
+the contract and inform users about the change.
 
 Unfortunately, both options come with significant negatives: (1) An upgradeable
 proxy contract is inherently not permissionless and/or decentralized. Though
@@ -124,12 +133,13 @@ address is cumbersome, trust-maximizing and non-scalable. It comes with
 increased scrutiny by the community, potential loss of credibility and
 significant cost.
 
-While in the traditional software world vulnerabilities can be fixed in minutes
-by identifying, fixing and redeploying the software with the same state,
-Ethereum's immutability property makes mitigating vulnerabilities non-trivial.
-For many businesses in the ecosystem, smart contract vulnerabilities might in
-fact be a worst-case scenario. We hence conclude that maintaining deployed
-contracts is, and will be, difficult.
+For traditional software, a fix for a vulnerability can be distributed by
+releasing a new version of the product (that might trigger other auto-update
+patterns) or, in case of a web application, the fix can be put in production
+within minutes. Ethereum's immutability property makes fixing vulnerabilities
+non-trivial. For many businesses in the ecosystem, smart contract
+vulnerabilities might in fact be a worst-case scenario. We hence conclude that
+maintaining deployed contracts is, and will be, difficult.
 
 Which brings us to why attacking smart contracts is currently a negative-sum
 game.  Firstly, we argue why attackers may not be incentivized to attack
@@ -169,8 +179,7 @@ contracts fairly in favor of users and developers. Auditors confidentially
 submit disclosures to 0xdeface.  Contract owners review disclosures. Do auditor
 and contract owner agree that a critical vulnerability has been found, then a
 contract can be settled fairly by returning its users' funds. Auditors get
-rewarded with a bounty held in escrow by 0xdeface's Negotiator. 0xdeface's goal
-is to make attacking Ethereum smart contracts a positive-sum game.
+rewarded with a bounty held in escrow by 0xdeface's Negotiator.
 
 ## Overview
 
@@ -213,16 +222,16 @@ Attacking.
 Another central component is 0xdeface's _Exploitable_ EIP standard. It is an
 optional interface for developers to implement, potentially preventing their
 contracts from getting drained. Exploitable currently consists of seven
-functions. These being: 
+functions. These being:
 
 1. `exploitableVersion()`: Returning the version of the incentive game
 1. `implementsExploitable()`: Checking the contract's compatibility
 1. `exploitableReward()`: Returning the attacker's potential reward in Wei
 1. `pay(uint256 vulnId, string publicKey)`: For the owner to submit their
-   public key along with the attacker's reward
+   encryption public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the owner to decide on the
    criticality of a vulnerability
-1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and 
+1. `restore()`: Invoked when an owner decides to ignore a vulnerability; and
 1. `exit()`: Invoked when an owner decides to shut down the contract due to a
    vulnerability.
 
@@ -578,20 +587,22 @@ attacking a worthwhile occupation and a positive-sum game.
 6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
    owners can subscribe to via email for updates on the latest emitted events.
 7. Note that the 0xdeface protocol is consensual as only contracts implementing
-   the exploitable EIP standard can be attacked. 
+   the exploitable EIP standard can be attacked.
 
 ## References
 
 1. [PEREZ, Daniel; LIVSHITS, Benjamin. Smart Contract Vulnerabilities: Does
    Anyone Care?. arXiv preprint arXiv:1902.06710,
    2019.](https://arxiv.org/abs/1902.06710)
-1. https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562
-1. https://blog.gnosis.pm/security-update-on-the-dxdao-bug-bounty-52cec0f02cde
-1. https://github.com/ConsenSys/mythril-classic
-1. https://github.com/trailofbits
-1. https://etherscan.io/contractsVerified
-1. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
-1. https://hackerone.com/augurproject
-1. https://twitter.com/mythril_watch
-1. https://uniswap.io/
-1. https://www.gwern.net/Self-decrypting-files
+2. https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562
+3. https://blog.gnosis.pm/security-update-on-the-dxdao-bug-bounty-52cec0f02cde
+4. https://github.com/ConsenSys/mythril-classic
+5. https://github.com/trailofbits
+6. https://etherscan.io/contractsVerified
+7. https://www.telegraph.co.uk/technology/video-games/9053870/Online-game-theft-earns-real-world-conviction.html
+8. https://hackerone.com/augurproject
+9. https://twitter.com/mythril_watch
+10. https://uniswap.io/
+11. https://www.gwern.net/Self-decrypting-files
+12. https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7
+13. https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/
