@@ -197,6 +197,17 @@ vulnerability been found, then it is in the contract owner's decision to either
 In the following sections, we argue for why we believe the negotiator's
 scheme is in fact incentivizing fair settlements of contracts.
 
+#### Proof of Attacking
+
+In the 0xdeface protocol an attacker is able to submit a hash of their
+unencrypted vulnerability report along with their `commit`. While this doesn't
+expose the report, it allows the attacker to prove publicly that they submitted
+a legit vulnerability at a certain point in time (time-stamping). Does the
+contract owner shut down the contract using a non-compliant procedure, then the
+attacker can reveal the content of the time-stamped report and prove to the
+world that the owner didn't play the game fairly. We call this scheme Proof of
+Attacking. 
+
 ### Exploitable EIP standard
 
 Another central component is 0xdeface's _Exploitable_ EIP standard. It is an
@@ -339,13 +350,15 @@ higher value than the cost of paying bounties to attackers, we argue that
 the next section, we'll elaborate on the potential attack vectors of the
 protocol and how we plan to mitigate them.
 
-### Attack Vectors
+### Attack Vectors and Limitations
 
-This section will list all known attack vectors of the protocol and answer how
-we plan to mitigate them. If, in the future, more attack vectors become known,
-we'll update this list.
+This section will list all known attack vectors and limitations of the protocol
+and answer how we plan to mitigate them. If, in the future, more attack vectors
+become known, we'll update this list.
 
-#### 1. What if an attacker doesn't want to participate in the 0xdeface protocol?
+#### Attack Vectors
+
+##### 1. What if an attacker doesn't want to participate in the 0xdeface protocol?
 
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol in the previous sections. If an attacker wants to
@@ -361,19 +374,19 @@ bounty. Is 10%, e.g. 100€ bounty for a contract with a balance of 1000€ enou
 0xdeface is committed to experiment with those parameters before launching to
 give contract owners reliable heuristics.
 
-#### 2. What if an attacker submits a vulnerability but never reveals it?
+##### 2. What if an attacker submits a vulnerability but never reveals it?
 
 All vulnerability structs have a timeout property. In case an attacker submits
 a vulnerability, it's being paid by the contract owner but the hacker never
 calls `reveal()`, a timeout expires that allows the contract owner to reclaim
 the paid bounty.
 
-#### 3. What if a contract owner decides to ignore a legit vulnerability?
+##### 3. What if a contract owner decides to ignore a legit vulnerability?
 
 A contract owner can of course decide to do so. In that case, however, their
 contract is at risk of getting drained by the attacker illegally.
 
-#### 4. What if a contract owner is able to adjust the value of `exploitableReward` mid-process?
+##### 4. What if a contract owner is able to adjust the value of `exploitableReward` mid-process?
 
 The Exploitable EIP standard is not opinionated about the implementation of
 `exploitReward`. A contract owner could hence implement an adjustable
@@ -382,7 +395,7 @@ expected bounty. Attackers should hence always audit the Exploitable EIP
 standard functions carefully to make sure, they're not tricked in giving away a
 vulnerability for free.
 
-#### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
+##### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
 
 It's of course in the contract owner's responsibility to make sure the damage
 is correctly estimated by the attacker. As the `damage` will ultimately dictate
@@ -392,7 +405,7 @@ contract owner to decline the vulnerability with e.g. `string reason = "Damage
 value too high/low"`. This will allow the attacker to submit the vulnerability
 again but with a correct `damage` estimate.
 
-#### 6. What if two critical vulnerabilities are found at the same time?
+##### 6. What if two critical vulnerabilities are found at the same time?
 
 It's in the contract owner's discretion to sort this out. If there are more
 than two vulnerabilities found at the same time, overall having a greater
@@ -402,7 +415,7 @@ where a vulnerability cannot be submitted as there is no bounty-ETH stocked in
 the exploitable contract. In that case, the attacker should wait for the ETH to
 be restocked by the contract owner.
 
-#### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
+##### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
 
 Assume an attacker finds a vulnerability and commits it. A contract owner could
 now choose to not `pay` for the vulnerability and audit the contract code
@@ -430,21 +443,15 @@ Even though we believe the arguments above to be sufficient to stop this
 behavior from happening, there is a couple of things the protocol can help the
 attackers with.
 
-In the 0xdeface protocol an attacker is able to submit a hash of their
-unencrypted vulnerability report along with their `commit`. While this doesn't
-expose the report, it allows the attacker to prove publicly that they submitted
-a legit vulnerability at a certain point in time (time-stamping).  Does the
-contract owner in fact shut down the contract using a non-compliant procedure,
-then the attacker can reveal their time-stamped report and prove to the world
-that the owner didn't play the game fairly. We believe this would yield a
-backlash in the community.
+The attacker can reveal their Proof of Attacking, showing to the community that
+a contract owner didn't play the game fairly. We believe this would trigger a
+community backlash against the contract owner and in favor of the attacker.
 
-In cases where contract owners decide to audit the code themselves on reception
-of a vulnerability report, the attacker could also choose to announce the
-release of the time-stamped and unencrypted report publicly after e.g. 24
-hours. While we're unsure about the legality of this (sounds a lot like
-blackmailing), it would pressure the contract owner into paying for the
-vulnerability and fairly exiting the contract.
+The attacker could also choose to announce the release of the time-stamped and
+unencrypted report publicly after e.g. 24 hours. While we're unsure about the
+legality of this (sounds a lot like blackmailing), it would pressure the
+contract owner into paying for the vulnerability and fairly exiting the
+contract.
 
 Lastly, assume an attacker could encrypt a file such that it takes e.g. 24
 hours on any CPU to decrypt (non-serializable computation, VDFs). An attacker
@@ -453,18 +460,45 @@ pressure the contract owner into making a decision within 24 hours. To our
 knowledge, such encryption is unfortunately not practically possible at this
 point. It is, however, a part of on-going research [11].
 
-In this section, we gave an overview of the incentives built into the 0xdeface
-protocol. As we now covered all technical aspects of it, we move on to
-explaining how we intent to build the protocol.
+In this section, we gave an overview of the protocol's attack vectors. In the
+next section, we outline foreseen limitations of it.
 
-## Limitations
+#### Limitations
 
 We acknowledge that fact that the economic incentives laid out in this document
-might not work as intended. We're especially concerned about attackers simply
+might not work as intended. In this section, we highlight some limitations.
+
+##### 1. The attacker is simply not interested in participating in the protocol.
+
+We're especially concerned about attackers simply
 not being interested in playing 0xdeface's game as there's more monetary value
 to gain from simply draining a contract illegally. It is our strong conviction,
 however, that there's generally more attackers out there willing to make a
 legal buck than an illegal.
+
+##### 2. What if the attacker simply emails the contract owner.
+
+Assume an attacker finds a vulnerable smart contract that implements the
+0xdeface protocol. Instead of using it, however, they choose to simply email
+the vulnerability report along with a request of 1 ETH to the contract owner
+confidentially.
+
+We'd like to highlight several reasons for why we thing it would be beneficial
+for attacker and contract owner to go through the protocol's process instead.
+(1) It makes the disclosure of vulnerabilities transparent by committing all
+relevant information on-chain. At any point in the process anyone can see if
+e.g. the contract is currently under attack, when a vulnerability was disclosed
+and if a contract's exit function was called. (2) In cases where the contract
+owner denies an attacker a rightfully earned bounty, they can use the Proof of
+Attacking to confirm the legitimacy of the report. (3) Contract code is often
+copied and deployed by multiple independent owners (e.g. Parity multi-sig
+wallet). It is 0xdeface protocol's goal to make coordinated shutdowns a
+possibility. (4) It makes the shut down of a contract a possibility in the
+first place. Most of the well-known contracts currently do not implement shut
+down procedures. Through 0xdeface's exit function, a contract owner is invited
+to make a conscious decision on what to do when their contract is vulnerable
+even before deploying it to the network. We argue that this alone will improve
+overall security.
 
 At last, only experimentation and utilization will tell if this is the case. To
 make this happen, 0xdeface is looking for funding.
