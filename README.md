@@ -450,24 +450,20 @@ committing vulnerabilities they'd simply drain future contract's illegally.
 
 Even though we believe the arguments above to be sufficient to stop this
 behavior from happening, there is a couple of things the protocol can help the
-attackers with.
-
-The attacker can reveal their Proof of Attacking, showing to the community that
-a contract owner didn't play the game fairly. We believe this would trigger a
-community backlash against the contract owner and in favor of the attacker.
-
-The attacker could also choose to announce the release of the time-stamped and
-unencrypted report publicly after e.g. 24 hours. While we're unsure about the
-legality of this (sounds a lot like blackmailing), it would pressure the
-contract owner into paying for the vulnerability and fairly exiting the
-contract.
-
-Lastly, assume an attacker could encrypt a file such that it takes e.g. 24
-hours on any CPU to decrypt (non-serializable computation, VDFs). An attacker
-could commit a time-locked vulnerability report to the negotiator and hence
-pressure the contract owner into making a decision within 24 hours. To our
-knowledge, such encryption is unfortunately not practically possible at this
-point. It is, however, a part of on-going research [11].
+attackers with. (1) The attacker can reveal their Proof of Attacking, showing
+to the community that a contract owner didn't play the game fairly. We believe
+this would trigger a community backlash against the contract owner and in favor
+of the attacker. (2) The attacker could also choose to announce the release of
+the time-stamped and unencrypted report publicly after e.g. 24 hours. While
+we're unsure about the legality of this (sounds a lot like blackmailing), it
+would pressure the contract owner into paying for the vulnerability and fairly
+exiting the contract. (3) Lastly, assume an attacker could encrypt a file such
+that it takes e.g. 24 hours on any CPU to decrypt (non-serializable
+computation, VDFs). An attacker could commit a time-locked vulnerability report
+to the negotiator and hence pressure the contract owner into making a decision
+within 24 hours. To our knowledge, such encryption is unfortunately not
+practically possible at this point. It is, however, a part of on-going research
+[11].
 
 #### 8. Committing vulnerabilities will motivate other attackers to also audit a contract and drain it before it is able to exit.
 
