@@ -520,7 +520,7 @@ to make a conscious decision on what to do when their contract is vulnerable
 even before deploying it to the network. We argue that this alone will improve
 overall security.
 
-#### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
+##### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
 
 Say a contract implementing the 0xdeface protocol is reported to be vulnerable
 by an attacker. In addition, assume this contract has a large number (e.g.
