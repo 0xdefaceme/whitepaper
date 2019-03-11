@@ -359,15 +359,15 @@ higher value than the cost of paying bounties to attackers, we argue that
 the next section, we'll elaborate on the potential attack vectors of the
 protocol and how we plan to mitigate them.
 
-### Attack Vectors and Limitations
+## Attack Vectors and Limitations
 
 This section will list all known attack vectors and limitations of the protocol
 and answer how we plan to mitigate them. If, in the future, more attack vectors
 become known, we'll update this list.
 
-#### Attack Vectors
+### Attack Vectors
 
-##### 1. What if an attacker doesn't want to participate in the 0xdeface protocol?
+#### 1. What if an attacker doesn't want to participate in the 0xdeface protocol?
 
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol in the previous sections. If an attacker wants to
@@ -383,19 +383,19 @@ bounty. Is 10%, e.g. 100€ bounty for a contract with a balance of 1000€ enou
 0xdeface is committed to experiment with those parameters before launching to
 give contract owners reliable heuristics.
 
-##### 2. What if an attacker submits a vulnerability but never reveals it?
+#### 2. What if an attacker submits a vulnerability but never reveals it?
 
 All vulnerability structs have a timeout property. In case an attacker submits
 a vulnerability, it's being paid by the contract owner but the hacker never
 calls `reveal()`, a timeout expires that allows the contract owner to reclaim
 the paid bounty.
 
-##### 3. What if a contract owner decides to ignore a legit vulnerability?
+#### 3. What if a contract owner decides to ignore a legit vulnerability?
 
 A contract owner can of course decide to do so. In that case, however, their
 contract is at risk of getting drained by the attacker illegally.
 
-##### 4. What if a contract owner is able to adjust the value of `exploitableReward` mid-process?
+#### 4. What if a contract owner is able to adjust the value of `exploitableReward` mid-process?
 
 The Exploitable EIP standard is not opinionated about the implementation of
 `exploitReward`. A contract owner could hence implement an adjustable
@@ -404,7 +404,7 @@ expected bounty. Attackers should hence always audit the Exploitable EIP
 standard functions carefully to make sure, they're not tricked in giving away a
 vulnerability for free.
 
-##### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
+#### 5. What if an attacker maliciously sets the damage estimate to a higher than legit value?
 
 It's of course in the contract owner's responsibility to make sure the damage
 is correctly estimated by the attacker. As the `damage` will ultimately dictate
@@ -414,7 +414,7 @@ contract owner to decline the vulnerability with e.g. `string reason = "Damage
 value too high/low"`. This will allow the attacker to submit the vulnerability
 again but with a correct `damage` estimate.
 
-##### 6. What if two critical vulnerabilities are found at the same time?
+#### 6. What if two critical vulnerabilities are found at the same time?
 
 It's in the contract owner's discretion to sort this out. If there are more
 than two vulnerabilities found at the same time, overall having a greater
@@ -424,7 +424,7 @@ where a vulnerability cannot be submitted as there is no bounty-ETH stocked in
 the exploitable contract. In that case, the attacker should wait for the ETH to
 be restocked by the contract owner.
 
-##### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
+#### 7. What if a legit vulnerability is committed but the contract owner choses to audit the contract code themselves instead of paying the bounty?
 
 Assume an attacker finds a vulnerability and commits it. A contract owner could
 now choose to not `pay` for the vulnerability and audit the contract code
@@ -483,12 +483,12 @@ scanning the blockchain and illegally draining committed contracts [15].
 In this section, we gave an overview of the protocol's attack vectors. In the
 next section, we outline foreseen limitations of it.
 
-#### Limitations
+### Limitations
 
 We acknowledge that fact that the economic incentives laid out in this document
 might not work as intended. In this section, we highlight some limitations.
 
-##### 1. The attacker is simply not interested in participating in the protocol.
+#### 1. The attacker is simply not interested in participating in the protocol.
 
 We're concerned about attackers simply not being interested in playing
 0xdeface's game as there's more monetary value to gain from simply draining a
@@ -496,7 +496,7 @@ contract illegally. It is our strong conviction, however, that there's
 generally more attackers out there willing to make a legal buck than an
 illegal.
 
-##### 2. What if the attacker simply emails the contract owner.
+#### 2. What if the attacker simply emails the contract owner.
 
 Assume an attacker finds a vulnerable smart contract that implements the
 0xdeface protocol. Instead of using it, however, they choose to simply email
@@ -520,7 +520,7 @@ to make a conscious decision on what to do when their contract is vulnerable
 even before deploying it to the network. We argue that this alone will improve
 overall security.
 
-##### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
+#### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
 
 Say a contract implementing the 0xdeface protocol is reported to be vulnerable
 by an attacker. In addition, assume this contract has a large number (e.g.
