@@ -499,7 +499,7 @@ Assume an attacker finds a vulnerable smart contract that implements the
 the vulnerability report along with a request of 1 ETH to the contract operator
 confidentially.
 
-We'd like to highlight several reasons for why we thing it would be beneficial
+We'd like to highlight several reasons for why we think it would be beneficial
 for attacker and contract operator to go through the protocol's process instead.
 (1) It makes the disclosure of vulnerabilities transparent by committing all
 relevant information on-chain. At any point in the process anyone can see if
