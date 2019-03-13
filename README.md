@@ -69,7 +69,7 @@ contract attacks increase in the future.
 In this section, we hence discuss the motives at play for (1) why it is
 seemingly rational for an attacker to target smart contracts, (2) why it is
 difficult to maintain smart contracts and (3) why the situation leads to a
-negative-sum game. Furthermore, we motivate why there should be an EIP standard
+negative-sum game. Furthermore, we motivate why there should be an ERC standard
 and marketplace for consensually exchanging vulnerabilities between attackers
 and contract operators. To begin with, we elaborate reasons for why it is
 seemingly rational for an attacker to target smart contracts.
@@ -174,7 +174,7 @@ the loss of user funds? The attacker? The contract operator?
 
 Hence as the stolen ETH is essentially taken out of circulation, we conclude
 the situation to be a negative-sum game. It is at this point that we introduce
-0xdeface. 0xdeface or EIP-XXXX is a standard to settle vulnerable smart
+0xdeface. 0xdeface or ERC-XXXX is a standard to settle vulnerable smart
 contracts fairly in favor of users and developers. Auditors confidentially
 submit disclosures to 0xdeface.  Contract operators review disclosures. Do auditor
 and contract operator agree that a critical vulnerability has been found, then a
@@ -192,10 +192,10 @@ The _Negotiator_ is 0xdeface's central component. It is an Ethereum smart
 contract consisting of functions for (1) an attacker to _commit_ a
 vulnerability, (2) a contract operator to _pay_ for a vulnerability, (3) an
 attacker to _reveal_ a vulnerability and (4) a contract operator to _decide_ on a
-vulnerability. In essence, the negotiator allows an attacker to confidentially
+vulnerability. In essence, the Negotiator allows an attacker to confidentially
 transmit a vulnerability to a contract operator using public-key cryptography
 (commit and reveal). In order for a contract operator to view a vulnerability,
-however, they'll have to send a stake to the negotiator (pay). Has a potential
+however, they'll have to send a stake to the Negotiator (pay). Has a potential
 vulnerability been found, then it is in the contract operator's decision to either
 (decide):
 
@@ -203,7 +203,7 @@ vulnerability been found, then it is in the contract operator's decision to eith
    attacker; or
 1. Ignore the vulnerability, sending the stake back to the contract operator.
 
-In the following sections, we argue for why we believe the negotiator's
+In the following sections, we argue for why we believe the Negotiator's
 scheme is in fact incentivizing fair settlements of contracts.
 
 #### Proof of Attacking
@@ -217,16 +217,16 @@ attacker can reveal the content of the time-stamped report and prove to the
 world that the operator didn't play the game fairly. We call this scheme Proof of
 Attacking. 
 
-### Exploitable EIP standard
+### Exploitable ERC standard
 
-Another central component is 0xdeface's _Exploitable_ EIP standard. It is an
+Another central component is 0xdeface's _Exploitable_ ERC standard. It is an
 optional interface for developers to implement, potentially preventing their
 contracts from getting drained. Exploitable currently consists of seven
 functions. These being:
 
-1. `exploitableVersion()`: Returning the version of the incentive game
+1. `ExploitableVersion()`: Returning the version of the incentive game
 1. `implementsExploitable()`: Checking the contract's compatibility
-1. `exploitableReward()`: Returning the attacker's potential reward in Wei
+1. `ExploitableReward()`: Returning the attacker's potential reward in Wei
 1. `pay(uint256 vulnId, string publicKey)`: For the operator to submit their
    encryption public key along with the attacker's reward
 1. `decide(uint256 vulnId, bool decision)`: For the operator to decide on the
@@ -236,7 +236,7 @@ functions. These being:
    vulnerability.
 
 In one of the following sections, we discuss how developers will profit from
-implementing the Exploitable EIP standard.
+implementing the Exploitable ERC standard.
 
 ### 0xdeface.me Website
 
@@ -258,26 +258,26 @@ This section outlines the interactive process of _commiting_, _paying_,
 _revealing_ and _deciding_ on a vulnerability. As it serves the purpose to
 further understanding about *how* the system works, we're going to ignore
 incentives for now. To simplify, we're instead going to make a few assumptions.
-(1) The exploitable contract implements the Exploitable EIP standard. (2) The
+(1) The Exploitable contract implements the Exploitable ERC standard. (2) The
 attacker is willing to participate in 0xdeface's incentive game. Additionally,
 we're only going to describe one happy path here. We'll discuss incentives and
 attack vectors in one of the following sections.
 
 As figure 1 illustrates, the process starts with the attacker finding a
-vulnerability in the exploitable contract.
+vulnerability in the Exploitable contract.
 
 ![figure 1](https://raw.githubusercontent.com/0xdefaceme/whitepaper/master/assets/figure1.png)
 
-The attacker hence calls `commit(IExploitable exploitable, uint256 damage)` on
-the negotiator contract. `exploitable` here being the vulnerable contract and
+The attacker hence calls `commit(IExploitable Exploitable, uint256 damage)` on
+the Negotiator contract. `Exploitable` here being the vulnerable contract and
 `damage` the potential damage the vulnerability could cause (denoted in "Wei").
 Note that in this first iteration, we allow the attacker to single-handedly set
 the estimation [footnote 5].
 
-Calling `commit`, the negotiator contract will make sure that `IExploitable
-exploitable` implements `implementsExploitable()` and that `damage` doesn't
-exceed the exploitable's balance. Is this the case, then a new vulnerability
-will be added and a `Commit(uint256 id, address exploitable, uint256 damage,
+Calling `commit`, the Negotiator contract will make sure that `IExploitable
+Exploitable` implements `implementsExploitable()` and that `damage` doesn't
+exceed the Exploitable's balance. Is this the case, then a new vulnerability
+will be added and a `Commit(uint256 id, address Exploitable, uint256 damage,
 address attacker)` event will be emitted to inform the contract operator [footnote
 6].
 
@@ -287,9 +287,9 @@ online yet. As the vulnerability report will be encrypted using eth-ecies
 with the attacker [10]. This is done by the contract operator calling `pay(uint256
 vulnId, string publicKey) public payable`. `pay` checks (1) if the
 vulnerability exists (2) if an appropriate bounty was sent and (3) if the
-sender is the exploitable contract. Is this the case, then the vulnerability is
+sender is the Exploitable contract. Is this the case, then the vulnerability is
 marked paid, the public key is stored and a `Pay(uint256 id, address
-exploitable, uint256 bounty)` event is emitted to inform the attacker.
+Exploitable, uint256 bounty)` event is emitted to inform the attacker.
 
 As the contract operator's public key is now available to the attacker, the
 vulnerability can be encrypted using a public-key encryption scheme.
@@ -303,7 +303,7 @@ Using the revealed hash, the contract operator can now download the report from
 IPFS, decrypt it using their private key and study it. They now have two
 options: (1) Decide to ignore the vulnerability and therefore send the bounty
 back to themselves. (2) Decide to give away under the vulnerability and hence
-shut down their contract. Do they decide to give in, then the negotiator sends
+shut down their contract. Do they decide to give in, then the Negotiator sends
 the bounty to the attacker's account. Nonetheless, the Negotiator emits a
 `Decide(uint256 vulnId, bool decision)` event and closes the vulnerability.
 
@@ -320,9 +320,9 @@ drain a contract's funds, it would not make sense to outline a mathematical
 model of the problem here. Instead, this section makes an argument for why
 attackers and contract operators should use the 0xdeface protocol and why this
 transforms attacking contracts to a positive-sum game. We'll start by making
-the case for why contract operators should implement the exploitable EIP standard.
+the case for why contract operators should implement the Exploitable ERC standard.
 
-By implementing the exploitable EIP standard, contract operators now have the
+By implementing the Exploitable ERC standard, contract operators now have the
 option to dynamically set bounties on a main net contract. While there is of
 course a cost involved in offering this bounty to attackers, it comes with
 several benefits: (1) It can be grown dynamically with the size of the
@@ -348,7 +348,7 @@ expenses.
 Lastly, users' funds are secured through the 0xdeface protocol. As an attacker
 will be more inclined to scavenge the bounty than draining the contract, user
 funds will not be affected by the disclosures of vulnerabilities. In addition,
-the exploitable EIP standard is generic enough to allow users to vote on how to
+the Exploitable ERC standard is generic enough to allow users to vote on how to
 handle a vulnerability, e.g. via Aragon Agent [11]. This gives the option to
 make users part of the governance process in case of a imminent settlement.
 
@@ -363,7 +363,7 @@ protocol and how we plan to mitigate them.
 
 This section will list all known attack vectors and limitations of the protocol
 and answer how we plan to mitigate them. If, in the future, more attack vectors
-become known, we'll update this list.
+or limitations become known, we'll update this list.
 
 ### Attack Vectors
 
@@ -371,22 +371,20 @@ become known, we'll update this list.
 
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol in the previous sections. If an attacker wants to
-drain a contract implementing the Exploitable EIP standard anyways, they can of
+drain a contract implementing the Exploitable ERC standard anyways, they can of
 course do so. Ultimately, 0xdeface protocol doesn't have any mechanism to
 prevent irrational actors from doing damage.
 
 We believe that there's a significant necessity of experimentation needed for
 0xdeface protocol to find the right parameters. At this point we can only
 speculate about the optimal ratio between a contract's balance and the 0xdeface
-bounty. Is 10%, e.g. 100€ bounty for a contract with a balance of 1000€ enough?
-
-0xdeface is committed to experiment with those parameters before launching to
-give contract operators reliable heuristics.
+protocol bounty. We are committed to experiment with those parameters before
+launching to give contract operators reliable heuristics.
 
 #### 2. What if an attacker submits a vulnerability but never reveals it?
 
 All vulnerability structs have a timeout property. In case an attacker submits
-a vulnerability, it's being paid by the contract operator but the hacker never
+a vulnerability and it's being paid by the contract operator but the hacker never
 calls `reveal()`, a timeout expires that allows the contract operator to reclaim
 the paid bounty.
 
@@ -395,12 +393,12 @@ the paid bounty.
 A contract operator can of course decide to do so. In that case, however, their
 contract is at risk of getting drained by the attacker illegally.
 
-#### 4. What if a contract operator is able to adjust the value of `exploitableReward` mid-process?
+#### 4. What if a contract operator is able to adjust the value of `ExploitableReward` mid-process?
 
-The Exploitable EIP standard is not opinionated about the implementation of
+The Exploitable ERC standard is not opinionated about the implementation of
 `exploitReward`. A contract operator could hence implement an adjustable
 `exploitReward` function that when called on `pay` could yield a lower than
-expected bounty. Attackers should hence always audit the Exploitable EIP
+expected bounty. Attackers should hence always audit the Exploitable ERC
 standard functions carefully to make sure, they're not tricked in giving away a
 vulnerability for free.
 
@@ -414,17 +412,7 @@ contract operator to decline the vulnerability with e.g. `string reason = "Damag
 value too high/low"`. This will allow the attacker to submit the vulnerability
 again but with a correct `damage` estimate.
 
-#### 6. What if two critical vulnerabilities are found at the same time?
-
-It's in the contract operator's discretion to sort this out. If there are more
-than two vulnerabilities found at the same time, overall having a greater
-damage estimate than the exploitable's balance then, we recommend the contract
-operator to simply process them sequentially. There might additionally be the case
-where a vulnerability cannot be submitted as there is no bounty-ETH stocked in
-the exploitable contract. In that case, the attacker should wait for the ETH to
-be restocked by the contract operator.
-
-#### 7. What if a legit vulnerability is committed but the contract operator choses to audit the contract code themselves instead of paying the bounty?
+#### 6. What if a legit vulnerability is committed but the contract operator choses to audit the contract code themselves instead of paying the bounty?
 
 Assume an attacker finds a vulnerability and commits it. A contract operator could
 now choose to not `pay` for the vulnerability and audit the contract code
@@ -434,7 +422,7 @@ down the contract in a controlled manner.
 There's a couple of reasons why we believe that it is not in the interest of
 the contract operator to engage in this behavior: (1) While taking their time to
 audit the contract, the attacker could drain it illegally. (2) In order to
-execute a controlled shut down, the attacker would have to a implement a
+execute a controlled shut down, the operator would have to a implement a
 non-compliant shut down procedure before deploying the contract. As attackers
 would immediately spot this, they'd be suspicious and hesitant to commit a
 vulnerability in the first place.  In fact, the contract operator runs the risk of
@@ -451,38 +439,38 @@ committing vulnerabilities they'd simply drain future contract's illegally.
 Even though we believe the arguments above to be sufficient to stop this
 behavior from happening, there is a couple of things the protocol can help the
 attackers with. (1) The attacker can reveal their Proof of Attacking, showing
-to the community that a contract operator didn't play the game fairly. We believe
-this would trigger a community backlash against the contract operator and in favor
-of the attacker. (2) The attacker could also choose to announce the release of
-the time-stamped and unencrypted report publicly after e.g. 24 hours. While
-we're unsure about the legality of this (sounds a lot like blackmailing), it
-would pressure the contract operator into paying for the vulnerability and fairly
-exiting the contract. (3) Lastly, assume an attacker could encrypt a file such
-that it takes e.g. 24 hours on any CPU to decrypt (non-serializable
-computation, VDFs). An attacker could commit a time-locked vulnerability report
-to the negotiator and hence pressure the contract operator into making a decision
-within 24 hours. To our knowledge, such encryption is unfortunately not
-practically possible at this point. It is, however, a part of on-going research
-[11].
+to the community that a contract operator didn't play the game fairly. We
+believe this would trigger a community backlash against the contract operator
+in favor of the attacker. (2) The attacker could also choose to announce the
+release of the time-stamped and unencrypted report publicly after e.g. 24
+hours. While we're unsure about the legality of this (sounds a lot like
+blackmailing), it would pressure the contract operator into paying for the
+vulnerability and fairly exiting the contract. (3) Lastly, assume an attacker
+could encrypt a file such that it takes e.g. 24 hours on any CPU to decrypt
+(non-serializable computation, VDFs). An attacker could commit a time-locked
+vulnerability report to the Negotiator and hence pressure the contract operator
+into making a decision within 24 hours. To our knowledge, such encryption is
+unfortunately not practically possible at this point. It is, however, a part of
+on-going research [11].
 
-#### 8. Committing vulnerabilities will motivate other attackers to also audit a contract and drain it before it is able to exit.
+#### 7. Committing vulnerabilities will motivate other attackers to also audit a contract and drain it before it is able to exit.
 
 Assume an attacker submits a vulnerability. Another attacker could now listen
-to 0xdeface's negotiator and specifically target contracts that have committed
+to 0xdeface's Negotiator and specifically target contracts that have committed
 vulnerabilities. If the attacker succeeded to drain the contract illegally
 before the vulnerable contract's exit, it would make the 0xdeface protocol
-useless. 
-
-We're planning to investigate Submarine Sends to prevent other attackers from
-scanning the blockchain and illegally draining committed contracts [15].
+useless. We're hence planning to investigate Submarine Sends to prevent other
+attackers from scanning the blockchain and illegally draining committed
+contracts [15].
 
 In this section, we gave an overview of the protocol's attack vectors. In the
 next section, we outline foreseen limitations of it.
 
 ### Limitations
 
-We acknowledge that fact that the economic incentives laid out in this document
-might not work as intended. In this section, we highlight some limitations.
+We acknowledge the fact that the economic incentives laid out in this document
+might not work as intended. In this section, we highlight some of its
+limitations.
 
 #### 1. The attacker is simply not interested in participating in the protocol.
 
@@ -495,26 +483,26 @@ illegal.
 #### 2. What if the attacker simply emails the contract operator.
 
 Assume an attacker finds a vulnerable smart contract that implements the
-0xdeface protocol. Instead of using it, however, they choose to simply email
-the vulnerability report along with a request of 1 ETH to the contract operator
-confidentially.
+0xdeface protocol. Instead of using the protocol, however, they choose to
+simply email the vulnerability report along with a request of 1 ETH to the
+contract operator.
 
 We'd like to highlight several reasons for why we think it would be beneficial
-for attacker and contract operator to go through the protocol's process instead.
-(1) It makes the disclosure of vulnerabilities transparent by committing all
-relevant information on-chain. At any point in the process anyone can see if
-e.g. the contract is currently under attack, when a vulnerability was disclosed
-and if a contract's exit function was called. (2) In cases where the contract
-operator denies an attacker a rightfully earned bounty, they can use the Proof of
-Attacking to confirm the legitimacy of the report. (3) Contract code is often
-copied and deployed by multiple independent operators (e.g. Parity multi-sig
-wallet). It is 0xdeface protocol's goal to make coordinated shutdowns a
-possibility. (4) It makes the shut down of a contract a possibility in the
-first place. Most of the well-known contracts currently do not implement shut
-down procedures. Through 0xdeface's exit function, a contract operator is invited
-to make a conscious decision on what to do when their contract is vulnerable
-even before deploying it to the network. We argue that this alone will improve
-overall security.
+for attacker and contract operator to go through the protocol's process
+instead.  (1) It makes the disclosure of vulnerabilities transparent by
+committing all relevant information on-chain. At any point in the process
+anyone can see if e.g. the contract is currently under attack, when a
+vulnerability was disclosed and if a contract's exit function was called. (2)
+In cases where the contract operator denies an attacker a rightfully earned
+bounty, they can use the Proof of Attacking to confirm the legitimacy of the
+report. (3) Contract code is often copied and deployed by multiple independent
+operators (e.g. Parity multi-sig wallet). It is 0xdeface protocol's goal to
+make coordinated shutdowns possible. (4) 0xdeface makes shut downs of contracts
+possible in the first place. Most of the well-known contracts currently do not
+implement shut down procedures. Through 0xdeface's exit function, a contract
+operator is invited to make a conscious decision on what to do when their
+contract is vulnerable even before deploying it to the network. We argue that
+this alone will improve overall security.
 
 #### 3. The exit function will not scale to a large number of users as the block gas number will be reached.
 
@@ -523,21 +511,20 @@ by an attacker. In addition, assume this contract has a large number (e.g.
 1000) of "investors", so users that have a debt position in ETH or tokens with
 the contract. According to the previously outlined process of shutting down a
 contract, when a contract operator would decide to shut down the contract, the
-procedure could hit the Ethereum block gas limit. This would mean that the
+exit procedure could hit the Ethereum block gas limit. This would mean that the
 transaction becomes extremely expensive or fails to execute altogether.
 
 In theory, this problem could be mitigated by implementing a procedure inspired
-by Plasma exits. The exploitable contract implements an exit function that
+by Plasma exits. The Exploitable contract implements an exit function that
 sends all its ETH to a safe contract called "Claimable". The contract operator
-scans the original exploitable contract for all users that have an open debt
+scans the original Exploitable contract for all users that have an open debt
 position.  The contract operator builds a Merkle tree over all the scanned
 investor addresses and balances and submits its root to Claimable. Now, any
 user with an open debt position is able to prove to Claimable their outstanding
 balance. By calling a function on Claimable that verifies their Merkle proof,
 the users can individually refund their ETH without having to worry about
-hitting the Ethereum block gas limit [14].
-
-We are planning to investigate this scheme further.
+hitting the Ethereum block gas limit [14]. We are planning to investigate this
+scheme further.
 
 At last, only experimentation and utilization will tell if these limitations
 are a given. To make this happen, 0xdeface is looking for funding.
@@ -584,7 +571,7 @@ added cost for users. That's awesome! We worry though that without at least a
 minimum viable business model Uniswap will eventually face funding problems.
 
 We hence propose the following to maintain and develop 0xdeface protocol: A
-small fee (approx. 5%) of every bounty paid out from 0xdeface's negotiator. As
+small fee (approx. 5%) of every bounty paid out from 0xdeface's Negotiator. As
 this fee would be trivially forked out of the protocol, we make it optional.
 
 ## Conclusion
@@ -617,7 +604,7 @@ attacking a worthwhile occupation and a positive-sum game.
 6. 0xdeface plans to deploy an Ethereum blockchain listener that contract
    operators can subscribe to via email for updates on the latest emitted events.
 7. Note that the 0xdeface protocol is consensual as only contracts implementing
-   the exploitable EIP standard can be attacked.
+   the Exploitable ERC standard can be attacked.
 
 ## References
 
