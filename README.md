@@ -479,9 +479,10 @@ Malicious attackers can listen to the 0xdeface Negotiator to learn when a
 vulnerability has been committed against a contract, and then focus their own
 efforts on draining that contract. If the attacker succeeded in draining the
 contract illegally before the vulnerable contract exits, it would undermine
-legitimate attackers' efforts and defeat the purpose of the protocol. We plan
-to investigate Submarine Sends to prevent malicious attackers from scanning the
-blockchain and illegally draining committed contracts [15].
+legitimate attackers' efforts and defeat the purpose of the protocol. This
+attack vector is part of on-going research that we'd like to solve with
+appropriate funding. For more information visit [this
+issue](https://github.com/0xdefaceme/whitepaper/issues/8).
 
 In this section, we gave an overview of the protocol's attack vectors. In the
 next section, we outline the limitations of the protocol.
@@ -545,9 +546,26 @@ the users can individually reclaim their ETH without having to worry about
 hitting the Ethereum block gas limit [14]. We are planning to investigate this
 scheme further.
 
-Ultimately, only experimentation and utilization can determine if these or other
-limitations restrict the utility of the protocol. We are looking for funding to
-pay for this work.
+#### 4. Contract operation is currently limited to a single public key.
+
+At this point, only one public key can be submitted to the Negotiator's reveal
+function. This makes governing the Exploitable contract centralized as, for
+example, it's not transparent to the users who controls this key. Even if the
+key was under the control of multiple operators, a single operator could,
+without the consent of the other parties, exit the Exploitable contract.
+
+0xdeface protocol's goal is, however, to have control spread over multiple
+parties operating a contract. In an ideal scenario, we'd, for example, like to
+see an Aragon DAO govern a contract through an Aragon Agent. To make this
+happen we're in the process of investigating encryption schemes that allow to
+send payloads to multiple parties. Check out the progress by viewing [this
+issue](https://github.com/0xdefaceme/whitepaper/issues/12). Note, that we'll
+most likely have to rely on external funding to bring these schemes to
+production.
+
+Ultimately, only experimentation and utilization can determine if these or
+other limitations restrict the utility of the protocol. We are looking for
+funding to pay for this work.
 
 ## Funding
 
