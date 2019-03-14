@@ -31,7 +31,7 @@ best practices will take years to stabilize.
 In Ethereum, smart contracts are written in Solidity or Vyper, both
 inspired by existing programming languages: Javascript and Python, respectively.
 In both cases, the base language was slightly adjusted to provide new primitives
-to allow the transfer of monetary value possible. This approach has between
+to allow the transfer of monetary value possible. This approach has been
 criticized, however, especially in the case of Solidity, which has faced
 claims that its design principles were too relaxed for the secure transfer of
 money. And indeed, Solidity does feature odd design choices: (1) it doesn't
@@ -64,7 +64,7 @@ positive-sum game.
 Each smart contract that stores ETH is essentially a bounty on itself,
 offering a tempting target for attackers. We expect to see the frequency and
 ingenuity of attacks on smart contracts increase in the future, as the number
-of smart contracts grows, the amount of money at stack increases, known
+of smart contracts grows, the amount of money at stake increases, known
 vulnerabilities are better documented, and automated auditing
 suites like Consensys' Mithril [4] and TrailOfBits's ManiCore [5] make finding
 vulnerabilities easier.
@@ -84,7 +84,7 @@ permissionless innovation is key to the success of the respective ecosystems.
 For several reasons, developing a smart contract as closed source is considered
 a faux-pas: (1) Users should be able comprehend the full functionality of a
 smart contract (transparency); (2) Nobody must be able to exercise full control
-over a contract (decentralization); (3) Everybody must be allowed, without the
+over a contract (decentralization); (3) Everybody must be allowed, to
 innovate on any part of the infrastructure, without cost (permissionless).
 For these reasons, it is a widely accepted best practice that smart contracts
 must be open source. We recognize that *security through obscurity* is
@@ -93,7 +93,7 @@ contract attacker, open source smart contracts lowers the barrier to entry and
 lets them see what they are attacking.
 
 Over several weeks, 0xdeface used an Ethereum full node to crawl the Ethereum
-blockchain and Github to discover newly uploaded smart contracts. By leaving
+blockchain and GitHub to discover newly uploaded smart contracts. By leaving
 their `/build` folder in their GitHub repository, contract repositories could
 be found easily by querying for their address using the GitHub search API.
 While the setup of this experiment was trivial, it yielded many vulnerable
@@ -266,12 +266,12 @@ committing and eventually exiting a vulnerability.
 
 This section outlines the interactive process of _commiting_, _paying_,
 _revealing_ and _deciding_ on a vulnerability. As it serves the purpose to
-further understand *how* the system works, we're going to ignore
-incentives for now. Instead going to make a few assumptions to keep it simple:
-(1) The Exploitable contract implements the Exploitable ERC standard.
-(2) The attacker is willing to participate in 0xdeface's incentive game.
-Additionally, we're only going to describe one happy path here. We'll discuss
-incentives and attack vectors in one of the following sections.
+further understand *how* the system works, we're going to ignore incentives for
+now. Instead we're going to make a few assumptions to keep it simple: (1) The
+Exploitable contract implements the Exploitable ERC standard.  (2) The attacker
+is willing to participate in 0xdeface's incentive game.  Additionally, we're
+only going to describe one happy path here. We'll discuss incentives and attack
+vectors in one of the following sections.
 
 As figure 1 illustrates, the process starts with the attacker finding a
 vulnerability in the Exploitable contract.
@@ -326,7 +326,7 @@ these, we discuss the incentives at play in the next section.
 
 ## Incentives
 
-Earlier in this paper, claimed that 0xdeface transforms attacking
+Earlier in this paper, we claimed that 0xdeface transforms attacking
 smart contracts from a negative-sum game to a positive-sum game. As there are
 many human factors involved in the decision to maliciously drain a contract's
 funds, it would not make sense to outline a mathematical model of the problem
