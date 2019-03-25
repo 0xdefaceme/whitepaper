@@ -66,7 +66,7 @@ offering a tempting target for attackers. We expect to see the frequency and
 ingenuity of attacks on smart contracts increase in the future, as the number
 of smart contracts grows, the amount of money at stake increases, known
 vulnerabilities are better documented, and automated auditing
-suites like Consensys' Mithril [4] and TrailOfBits's ManiCore [5] make finding
+suites like Consensys' Mithril [4] and TrailOfBits's Manticore [5] make finding
 vulnerabilities easier.
 
 In this section, we discuss why it is (1) seemingly rational for an attacker to
