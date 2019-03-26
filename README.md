@@ -7,14 +7,15 @@
 
 An estimated 3 million ETH (350 million USD) are locked in vulnerable smart
 contracts today. Fortunately, only 0.30% (9,094 ETH, or approximately 1 million
-USD) has been claimed by attackers, but smart contracts continue to be attacked
+USD) have so far been claimed by attackers, but smart contracts continue to be attacked
 on a daily basis [1]. In this paper, we present a novel scheme to incentivize
 the responsible disclosure of smart contract vulnerabilities. We introduce a
-game (0xdeface.me) that incentivize a) security researchers to disclose
-vulnerabilities to contract operators instead of draining their funds; and
+game (0xdeface.me) that incentivizes:
+a) security researchers to disclose vulnerabilities to contract operators 
+instead of draining their funds
 b) contract operators to release a reward when a security breach is found and
-safely destroy contracts by returning funds to the stakeholders. We think this
-will transform smart contract security by changing the model from a
+safely destroy contracts by returning funds to the stakeholders. 
+We think this will transform smart contract security by changing the model from a
 negative-sum game to a positive-sum game. The goal of 0xdeface is to make
 Ethereum more secure by mitigating the impact of smart contract vulnerabilities,
 hence increasing the adoption and implementation of smart contracts to manage
@@ -25,24 +26,25 @@ funds in a decentralized fashion.
 Smart contracts represent a paradigm shift in programming, enabling the
 permissionless and transparent transfer of monetary value. This has only been
 practically possible since the launch of Ethereum. Since smart contracts are
-still so new, we are still developing best practices, and well-established
+fairly new, best practices are still being developed and well-established
 best practices will take years to stabilize.
 
 In Ethereum, smart contracts are written in Solidity or Vyper, both
 inspired by existing programming languages: Javascript and Python, respectively.
 In both cases, the base language was slightly adjusted to provide new primitives
-to allow the transfer of monetary value possible. This approach has been
-criticized, however, especially in the case of Solidity, which has faced
+to allow the transfer of monetary value. However This approach has been
+criticized, especially in the case of Solidity which has faced
 claims that its design principles were too relaxed for the secure transfer of
-money. And indeed, Solidity does feature odd design choices: (1) it doesn't
-have under- and overflow protection, (2) interfaces are not enforced, (3)
-similar modifiers are easily confused as their naming is virtually
-indistinguishable, (4) code reuse is implemented through multiple inheritance,
-a complex pattern that can lead to non-trivial bugs [13], and (5) inline
-assembly is hard to write, hard to read, and hard to audit.
+money. And indeed, Solidity does feature odd design choices: 
+(1) it doesn't have under- and overflow protection
+(2) interfaces are not enforced 
+(3) similar modifiers are easily confused as their naming is virtually indistinguishable
+(4) code reuse is implemented through multiple inheritance, a complex pattern 
+that can lead to non-trivial bugs [13]
+(5) inline assembly is hard to write, hard to read, and hard to audit.
 
-No one has been surprised that the combination of these design choices, a lack
-of best practices, and inexperienced developers has resulted in several million
+No one has been surprised that these design choices in combination with the lack of
+best practices and inexperienced developers has resulted in several million
 ETH being stolen. The most notable incident was in June 2016, when an attacker
 drained 3.6 million ETH from TheDAO [2], forcing the Ethereum community to hard
 fork the network to allow TheDAO users to withdraw their funds. Although the
@@ -53,7 +55,7 @@ smart contracts is still a challenge.  To this day, even the most experienced
 teams [12] and their world-class auditors make mistakes [3] and will continue
 to make mistakes going forward.
 
-To further understanding of this phenomenon and to give proper context, we'd
+To further understand this phenomenon and to give proper context, we'd
 like to highlight the incentives at play. Specifically, we'd like to elaborate
 on the motivations to attack contracts and how we think 0xdeface.me can
 improve the situation by shifting from an ecosystem-wide negative-sum game to a
@@ -62,18 +64,19 @@ positive-sum game.
 ## Motivation
 
 Each smart contract that stores ETH is essentially a bounty on itself,
-offering a tempting target for attackers. We expect to see the frequency and
-ingenuity of attacks on smart contracts increase in the future, as the number
+offering a tempting target for attackers. We expect the frequency and
+ingenuity of attacks on smart contracts to increase in the future, as the number
 of smart contracts grows, the amount of money at stake increases, known
 vulnerabilities are better documented, and automated auditing
 suites like Consensys' Mithril [4] and TrailOfBits's Manticore [5] make finding
 vulnerabilities easier.
 
-In this section, we discuss why it is (1) seemingly rational for an attacker to
-target smart contracts, (2) difficult to maintain smart contracts and (3) that
-this situation leads to a negative-sum game. We conclude that there should be an
-ERC standard and marketplace for the consensual exchange of vulnerabilities
-between attackers and contract operators.
+In this section, we discuss why it is 
+(1) seemingly rational for an attacker to target smart contracts;
+(2) difficult to maintain smart contracts and;
+(3) that this situation leads to a negative-sum game.
+We conclude that there should be an ERC standard and marketplace for the consensual
+exchange of vulnerabilities between attackers and contract operators.
 
 To begin, let's discuss why it is seemingly rational for an attacker to target
 smart contracts.
@@ -82,10 +85,12 @@ Since the dawn of Bitcoin and Ethereum, there has been a commonly shared
 conviction within the community that transparency, decentralization, and
 permissionless innovation is key to the success of the respective ecosystems.
 For several reasons, developing a smart contract as closed source is considered
-a faux-pas: (1) Users should be able comprehend the full functionality of a
-smart contract (transparency); (2) Nobody must be able to exercise full control
-over a contract (decentralization); (3) Everybody must be allowed, to
-innovate on any part of the infrastructure, without cost (permissionless).
+a faux-pas: 
+(1) Transparency: Users should be able comprehend the full functionality of a
+smart contract
+(2) Decentralization: Nobody must be able to exercise full control over a contract
+(3) Permissionless: Everybody must be allowed to innovate on any part of the infrastructure
+without cost
 For these reasons, it is a widely accepted best practice that smart contracts
 must be open source. We recognize that *security through obscurity* is
 not a viable defence mechanism, but it must be acknowledged that for a smart
@@ -123,26 +128,26 @@ the Ethereum network is assigned an address generated using the deployer's
 address and a nonce. This address is then used by clients to interact with the
 contract. Today, Ethereum smart contracts cannot be changed in place
 [footnote 2]. The options for the contract operator are limited to the
-following maintenance schemes: (1) Build an upgradeable contract using
-proxy-patterns or (2) Deploy a revised version of the contract and inform
-users of the change.
+following maintenance schemes: 
+(1) Build an upgradeable contract using proxy-patterns
+(2) Deploy a revised version of the contract and inform users of the change.
 
 Unfortunately, both options come with significant negatives:
 (1) An upgradeable proxy contract is inherently not permissionless or
-decentralized. Though implementation-specific, it likely defines an operator
+not decentralized. Though implementation-specific, it likely defines an operator
 that is able to change the proxy routing such that potentially users' funds
 could get, in the worst case, stolen.
 (2) Informing users and updating apps to the newly generated contract address
 is cumbersome, trust-maximizing and non-scalable. It comes with increased
 scrutiny by the community, potential loss of credibility and significant cost.
 
-For traditional software, a patch for a vulnerability can be distributed by
+For traditional software, a patch  can be distributed by
 releasing a new version of the product (that might trigger other auto-update
 patterns) or, in case of a web application, the fix can be put in production
 within minutes. Ethereum's immutability makes fixing vulnerabilities
 non-trivial. For many businesses in the ecosystem, smart contract
 vulnerabilities might in fact be a worst-case scenario. Maintaining deployed
-contracts is, and will continue to be, difficult.
+contracts is, and will continue to be difficult.
 
 This brings us to why attacking smart contracts is currently a negative-sum
 game. First, we argue why attackers may not be incentivized to attack
@@ -152,17 +157,17 @@ attack. Third, we state the role of the user in the situation.
 Attacking contracts, especially ones of well-known projects, often comes with
 several negatives for the attacker:
 (1) Increased attention by social media and community vigilance can lead to the
-attacker being identified and exposed.  
+attacker being identified and exposed.
 (2) By crowd-sourcing the attacker's addresses, stolen funds can be traced and
 effectively frozen by exchanges. The stolen ETH is taken out of the circulating
 supply, making attacks a negative-sum game.
 (3) Stolen funds can most likely not be exchanged into fiat, as most exchanges
 require KYC for larger amounts.
-(4) An attacker runs the risk criminal prosecution, as stealing users'
+(4) An attacker runs the risk of criminal prosecution, as stealing users'
 funds is very likely an offense in many jurisdictions [footnote 3].
 
 We believe these factors are a big part of why such a small portion of
-vulnerable funds—only 0.3%—have been claimed by attackers [1].
+vulnerable funds have been claimed by attackers [1].
 
 For a contract operator, the situation is equally tricky.
 (1) Bounty programs are often run before a contract is deployed. After
@@ -170,10 +175,10 @@ deployment, the contract quite literally _becomes_ the bounty [8].
 (2) As seen recently, audits can only limit the risk of vulnerabilities but
 not totally eradicate them [footnote 4].
 (3) Successful attacks to deployed contracts are often businesses' worst-case
-scenarios, resulting in the entire project shutting down (see: TheDAO) [2].
+scenarios, resulting in entire projects shutting down (see: TheDAO) [2].
 
 Contract users are probably the worst off of all parties. They potentially lose
-all their funds and often have no way to participate in governance
+all their funds and often have no way to participate in the governance
 decisions taken by a contract operator under fire. Regulation lags well behind
 the technology. This results in a lack of accountability. Who's to blame for
 the loss of user funds? The attacker? The contract operator?
@@ -204,10 +209,9 @@ contract consisting of functions for:
 (4) a contract operator to _decide_ on a vulnerability.
 In essence, the Negotiator allows an attacker to confidentially transmit a
 vulnerability to a contract operator using public-key cryptography
-(commit and reveal). For a contract operator to view a vulnerability,
-however, they must send a stake to the Negotiator (pay). If a potential
-vulnerability has been found, the contract operator must decide to either
-(decide):
+(commit and reveal). For a contract operator to view a vulnerability, 
+they must send a stake to the Negotiator (pay). If a potential
+vulnerability has been found, the contract operator must decide to either:
 
 1. Shut down the contract, return its users' funds, and send the stake to the
    attacker; or
@@ -223,9 +227,8 @@ unencrypted vulnerability report along with their `commit`. While this doesn't
 expose the report, it allows the attacker to prove publicly that they submitted
 a legit vulnerability at a certain point in time (time-stamping). If the
 contract operator shuts down the contract using a non-compliant procedure, then
-the attacker can reveal the content of the time-stamped report and prove to the
-world that the operator didn't play the game fairly. We call this scheme Proof
-of Attacking.
+the attacker can reveal the content of the time-stamped report and prove that 
+the operator didn't play the game fairly. We call this scheme Proof of Attacking.
 
 ### Exploitable ERC standard
 
@@ -267,11 +270,11 @@ committing and eventually exiting a vulnerability.
 This section outlines the interactive process of _commiting_, _paying_,
 _revealing_ and _deciding_ on a vulnerability. As it serves the purpose to
 further understand *how* the system works, we're going to ignore incentives for
-now. Instead we're going to make a few assumptions to keep it simple: (1) The
-Exploitable contract implements the Exploitable ERC standard.  (2) The attacker
-is willing to participate in 0xdeface's incentive game.  Additionally, we're
-only going to describe one happy path here. We'll discuss incentives and attack
-vectors in one of the following sections.
+now. Instead we're going to make a few assumptions to keep it simple: 
+(1) The Exploitable contract implements the Exploitable ERC standard.
+(2) The attacker is willing to participate in 0xdeface's incentive game.
+Additionally, we're only going to describe one happy path here. We'll discuss 
+incentives and attack vectors in one of the following sections.
 
 As figure 1 illustrates, the process starts with the attacker finding a
 vulnerability in the Exploitable contract.
@@ -296,7 +299,8 @@ online yet. The vulnerability report will be encrypted using eth-ecies
 (public-key cryptography), so the contract operator must first share a public
 key with the attacker [10]. This is done by the contract operator calling
 `pay(uint256 vulnId, string publicKey) public payable`. `pay` checks
-(1) if the vulnerability exists, (2) if an appropriate bounty was sent, and
+(1) if the vulnerability exists;
+(2) if an appropriate bounty was sent
 (3) if the sender is the Exploitable contract. Is this the case, then the
 vulnerability is marked paid, the public key is stored and a `Pay(uint256 id,
 address Exploitable, uint256 bounty)` event is emitted to inform the attacker.
@@ -330,10 +334,10 @@ Earlier in this paper, we claimed that 0xdeface transforms attacking
 smart contracts from a negative-sum game to a positive-sum game. As there are
 many human factors involved in the decision to maliciously drain a contract's
 funds, it would not make sense to outline a mathematical model of the problem
-here. Instead, this section argues that attackers and contract operators should
-use the 0xdeface protocol, and shows why this transforms attacking contracts
-into a positive-sum game. We make the case for why contract operators should
-implement the Exploitable ERC standard.
+here. Instead this section makes the case for why contract operators should
+implement the Exploitable ERC standard and argues that attackers and contract 
+operators should use the 0xdeface protocol to transform the attacking of contracts
+into a positive-sum game.
 
 By implementing the Exploitable ERC standard, contract operators have the
 option to dynamically set bounties on a main net contract. While there is
@@ -345,19 +349,19 @@ vulnerability may not be the worst-case scenario for the contract operator's
 business anymore;
 (3) Shutting down and redeploying contracts becomes a canonical process;
 (4) Vulnerabilities are disclosed directly to the contract operator and do not
-end up on secondary markets instead; and
+end up on secondary markets instead;
 (5) Investors and community are reassured that their funds are insured. In case
 of a shutdown, they'll likely not become angry or hesitant to invest.
 
 Attacking smart contracts becomes a legitimate occupation, since with the
-Exploitable ERC standard, attackers don't have to:
-(1) Engage in criminal activities [footnote 7];
-(2) Worry about public exposure, as they're not stealing money from investors.
+Exploitable ERC standard, attackers don't have to
+(1) engage in criminal activities [footnote 7];
+(2) worry about public exposure, as they're not stealing money from investors.
 Rather, the protocol allows for a "Proof of Attacking", which lets attackers
 gain credibility and become heroes to the community rather than villains.
 We believe this will foster an agile hacker community, complete with quickly
 evolving best practices; and
-(3) Risk having their stolen funds blacklisted. Since bounties will be acquired
+(3) risk having their stolen funds blacklisted. Since bounties will be acquired
 legally, they can be converted to fiat and used at the receipient's discretion.
 We expect the most successful attackers could live on the proceeds of their
 legitimate security work.
@@ -390,7 +394,7 @@ become known, we'll update this list.
 We believe we've made a compelling case for why an attacker should participate
 in the 0xdeface protocol. If an attacker wants to drain a contract implementing
 the Exploitable ERC standard anyways, they can do so. The 0xdeface protocol
-doesn't have a mechanism to prevent irrational actors from doing damage, but
+doesn't have a mechanism to prevent malevolent actors from doing damage, but
 it makes it less likely that rational actors will do so.
 
 We believe that experimentation will be necessary to find the right parameters
@@ -402,7 +406,7 @@ contract operators reliable heuristics.
 #### 2. What if an attacker submits a vulnerability but never reveals it?
 
 All vulnerability structs have a timeout property. If a contract operator pays
-for a submitted vulnerability but the attacker never  calls `reveal()`, a
+for a submitted vulnerability but the attacker never calls `reveal()`, a
 timeout expires that allows the contract operator to reclaim the paid bounty.
 
 #### 3. What if a contract operator decides to ignore a legitimate vulnerability?
@@ -452,7 +456,7 @@ be able to see that the contract operator is not playing the game fairly. We
 believe that in this case, the contract operator's reputation in the community
 would suffer significantly. Attackers may not work with them in the future, and
 the community may see them as being unreliable and selfish. Future attackers
-would be more likely to simply drain their future contracts illegally.
+would be more likely to drain their future contracts illegally.
 
 Even though we believe the arguments above are sufficient to stop this
 behavior from happening, there are other things the protocol can help the
@@ -468,7 +472,7 @@ blackmail over forced bounty payments, this risk could pressure contract
 operators into playing fair, paying attackers, and fairly exiting the contract.
 (3) An attacker could encrypt a file such that it takes an estimated amount of
 time on any CPU to decrypt (non-serializable computation, VDFs). An attacker
-could commit a time-locked vulnerability report to the Negotiator, putting  
+could commit a time-locked vulnerability report to the Negotiator, putting 
 pressure on the contract operator to make a decision within the estimated time.
 To our knowledge, such encryption is unfortunately not practically possible at
 this point. It is, however, a part of on-going research [11].
@@ -496,7 +500,7 @@ limitations.
 #### 1. The attacker does not want to participate in the protocol.
 
 Some attackers will not want to play 0xdeface's game, as there's more money
-to be made by simply draining a contract illegally. However, the protocol can
+to be made by draining a contract illegally. However, the protocol can
 provide an legal alternative to attackers who would prefer to act ethically
 and with the approval of the community.
 
