@@ -32,7 +32,7 @@ best practices will take years to stabilize.
 In Ethereum, smart contracts are written in Solidity or Vyper, both
 inspired by existing programming languages: Javascript and Python, respectively.
 In both cases, the base language was slightly adjusted to provide new primitives
-to allow the transfer of monetary value. However This approach has been
+to allow the transfer of monetary value. However, this approach has been
 criticized, especially in the case of Solidity which has faced
 claims that its design principles were too relaxed for the secure transfer of
 money. And indeed, Solidity does feature odd design choices: 
